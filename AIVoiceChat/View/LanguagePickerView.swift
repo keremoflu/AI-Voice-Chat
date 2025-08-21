@@ -9,13 +9,12 @@ import SwiftUI
 
 struct LanguagePickerView: View {
     
-    let countryList = CountryData.countries
     @Binding var picked: Country
     
     var body: some View {
         
         Menu {
-            ForEach(countryList, id: \.self) { item in
+            ForEach(CountryData.countries, id: \.self) { item in
                 Button {
                     picked = item
                 } label: {
