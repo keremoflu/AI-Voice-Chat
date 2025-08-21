@@ -9,7 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @StateObject var permissionManager = AudioPermissionManager()
+    @StateObject var alertManager = AlertManager()
+    @StateObject var permissionManager: AudioPermissionManager
+    @State var isShowSettingsAlert = false
+    
+    init() {
+        let alertManager = AlertManager()
+        _alertManager = StateObject(wrappedValue: alertManager)
+        _permissionManager = StateObject(wrappedValue: AudioPermissionManager(alertManager: alertManager))
+    }
     
     var body: some View {
         ZStack {
@@ -36,9 +44,16 @@ struct ContentView: View {
                 case .success(let success):
                     print("success")
                 case .failure(let failure):
-                    print("failure")
+                    print("failure: \(failure.localizedDescription)")
                 }
             }
+        }
+        .alert(item: $alertManager.alert) { alert in
+            Alert(
+                title: Text(alert.title),
+                primaryButton: .cancel(),
+                secondaryButton: .default(Text("Go To Settings"),
+                action: alert.primaryAction))
         }
         
     }

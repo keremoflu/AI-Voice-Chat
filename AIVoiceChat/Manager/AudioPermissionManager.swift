@@ -11,26 +11,57 @@ import AVFoundation
 final class AudioPermissionManager: ObservableObject {
     
     @Published var permissonStatus: AVAudioSession.RecordPermission = .undetermined
+    private let alertManager: AlertManager
+    
+    init(alertManager: AlertManager) {
+        self.alertManager = alertManager
+    }
     
     func startRequest(responseState: @escaping (Result<AVAudioSession.RecordPermission, AudioPermissionError>) -> Void) {
+        
+        let status = getPermissionStatus()
+        permissonStatus = status
+        
         switch permissonStatus {
         case .undetermined:
             requestRecordPermission { [weak self] isGranted in
                 guard let self else {
+                    print("weak fail")
                     responseState(.failure(.unknown))
                     return
                 }
-                permissonStatus = getPermissionStatus()
-                responseState(isGranted ? .success(.granted) : .failure(.disabled))
+                
+                let updatedStatus = self.getPermissionStatus()
+                self.permissonStatus = updatedStatus
+                self.handlePermissionStatus(updatedStatus, responseState: responseState)
+                
             }
-        case .denied:
+        default:
+            handlePermissionStatus(status, responseState: responseState)
+        }
+    }
+    
+    private func handlePermissionStatus(_ status: AVAudioSession.RecordPermission, responseState: @escaping (Result<AVAudioSession.RecordPermission, AudioPermissionError>) -> Void) {
+        switch status {
+        case .undetermined:
             responseState(.failure(.unknown))
+        case .denied:
+            alertManager.showAlert(for: .goToSettings(title: "Microphone Permission Required.", message: "Please go to settings and enable microphone permission", onAction: {
+                do {
+                    try SettingsURLHandler.shared.openAppSettings()
+                    responseState(.failure(.disabled))
+                } catch {
+                    responseState(.failure(.failedOpenSettings))
+                }
+            }))
+            responseState(.failure(.disabled))
         case .granted:
             responseState(.success(.granted))
         @unknown default:
             responseState(.failure(.unknown))
         }
     }
+    
     
     func getPermissionStatus () -> AVAudioSession.RecordPermission {
         return AVAudioSession.sharedInstance().recordPermission
@@ -52,6 +83,7 @@ extension AudioPermissionManager {
     enum AudioPermissionError: Error, LocalizedError {
         case disabled
         case unknown
+        case failedOpenSettings
         
         var errorDescription: String? {
             switch self {
@@ -59,6 +91,8 @@ extension AudioPermissionManager {
                 return "Microphone Usage Permission is denied. If it's a mistake, please go settings and enable it."
             case .unknown:
                 return "Unknown Permission State, please try again later."
+            case .failedOpenSettings:
+                return "We're failed to open settings. Please go settings and enable microphone permission."
             }
         }
     }
