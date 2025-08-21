@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct Prompt {
-    var id = UUID()
+struct Prompt: Hashable {
     var image: ImageResource
     var text: String
 }

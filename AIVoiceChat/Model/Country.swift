@@ -8,7 +8,6 @@
 import Foundation
 
 struct Country: Hashable {
-    var id = UUID()
     var name: String
     var flag: String
     var code: String

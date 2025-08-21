@@ -8,22 +8,46 @@
 import SwiftUI
 
 struct PromptHorizontalListView: View {
-    var body: some View {
-        PromptCellView()
-    }
-}
 
-private struct PromptCellView: View {
+    var isPromptSelected: (Prompt) -> Void
+    
     var body: some View {
-        HStack {
-            Image(systemName: "star.fill")
-                .font(.system(size: 16, weight: .regular))
-            Text("What do I need to learn playing harmonica?")
-                .lineLimit(2)
+        ScrollView (.horizontal) {
+            HStack {
+                ForEach(PromptData.prompts, id: \.self) { item in
+                    PromptCellView(prompt: item)
+                        .onTapGesture {
+                            isPromptSelected(item)
+                        }
+                }
+            }
         }
     }
 }
 
+private struct PromptCellView: View {
+    
+    var prompt: Prompt
+    
+    var body: some View {
+        HStack (spacing: 10) {
+            Image(prompt.image)
+                .resizable()
+                .frame(width: 24, height: 24)
+            Text(prompt.text)
+                .font(.quickSand(size: 16, name: .medium))
+                .multilineTextAlignment(.leading)
+                .lineLimit(2)
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(.white)
+        )
+        .frame(width: UIScreen.main.bounds.width * 0.5)
+    }
+}
+
 #Preview {
-    PromptHorizontalListView()
+    PromptHorizontalListView(isPromptSelected: {_ in })
 }
