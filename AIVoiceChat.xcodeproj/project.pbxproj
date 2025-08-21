@@ -19,6 +19,8 @@
 		0C433AFA2E57674B00475090 /* PromptHorizontalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C433AF92E57674B00475090 /* PromptHorizontalListView.swift */; };
 		0C433AFE2E576B5700475090 /* Prompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C433AFD2E576B5700475090 /* Prompt.swift */; };
 		0C433B002E576B7700475090 /* PromptData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C433AFF2E576B7700475090 /* PromptData.swift */; };
+		0C933F822E57934F000CF37C /* AudioPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F812E57934F000CF37C /* AudioPermissionManager.swift */; };
+		0C933F852E579735000CF37C /* SettingsURLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F842E579735000CF37C /* SettingsURLHandler.swift */; };
 		0CB5E1382E57477F00A25378 /* AIVoiceChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB5E1342E57477F00A25378 /* AIVoiceChatApp.swift */; };
 		0CB5E1392E57477F00A25378 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB5E1362E57477F00A25378 /* ContentView.swift */; };
 		0CB5E13A2E57477F00A25378 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CB5E1352E57477F00A25378 /* Assets.xcassets */; };
@@ -38,6 +40,8 @@
 		0C433AF92E57674B00475090 /* PromptHorizontalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptHorizontalListView.swift; sourceTree = "<group>"; };
 		0C433AFD2E576B5700475090 /* Prompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prompt.swift; sourceTree = "<group>"; };
 		0C433AFF2E576B7700475090 /* PromptData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptData.swift; sourceTree = "<group>"; };
+		0C933F812E57934F000CF37C /* AudioPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPermissionManager.swift; sourceTree = "<group>"; };
+		0C933F842E579735000CF37C /* SettingsURLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsURLHandler.swift; sourceTree = "<group>"; };
 		0CB5E1262E57477300A25378 /* AIVoiceChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIVoiceChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB5E1342E57477F00A25378 /* AIVoiceChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIVoiceChatApp.swift; sourceTree = "<group>"; };
 		0CB5E1352E57477F00A25378 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -118,6 +122,22 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		0C933F802E579345000CF37C /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				0C933F812E57934F000CF37C /* AudioPermissionManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		0C933F832E579702000CF37C /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				0C933F842E579735000CF37C /* SettingsURLHandler.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		0CB5E11D2E57477300A25378 = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +157,8 @@
 		0CB5E1372E57477F00A25378 /* AIVoiceChat */ = {
 			isa = PBXGroup;
 			children = (
+				0C933F832E579702000CF37C /* Helper */,
+				0C933F802E579345000CF37C /* Manager */,
 				0C433AF62E575ADE00475090 /* Data */,
 				0C433AF32E57599F00475090 /* Model */,
 				0C433AF02E5755C900475090 /* View */,
@@ -234,7 +256,9 @@
 				0C433AFA2E57674B00475090 /* PromptHorizontalListView.swift in Sources */,
 				0CB5E1392E57477F00A25378 /* ContentView.swift in Sources */,
 				0C433AF52E5759A600475090 /* Country.swift in Sources */,
+				0C933F822E57934F000CF37C /* AudioPermissionManager.swift in Sources */,
 				0C433AF82E575AE500475090 /* CountryData.swift in Sources */,
+				0C933F852E579735000CF37C /* SettingsURLHandler.swift in Sources */,
 				0C433AEC2E574E8300475090 /* Font+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -374,6 +398,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIVoiceChat/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need this permission to convert your voice into chat requests.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -408,6 +433,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIVoiceChat/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need this permission to convert your voice into chat requests.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

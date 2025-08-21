@@ -37,10 +37,10 @@ private struct PickerButtonView: View {
     var body: some View {
         HStack {
             Text("\(flagname) \(name)")
-                .font(.quickSand(size: 16, name: .medium))
+                .font(.quickSand(size: 14, name: .medium))
                 
             Image(systemName: "chevron.down")
-                .font(.system(size: 16, weight: .light))
+                .font(.system(size: 14, weight: .light))
         }.foregroundColor(.blackPrimary)
     }
 }
@@ -48,8 +48,8 @@ private struct PickerButtonView: View {
 private struct LanguagePickerBackground: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .padding(.horizontal)
-            .padding(.vertical, 12)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
             .background(
                 Capsule()
                     .fill(.white)

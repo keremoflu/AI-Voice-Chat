@@ -16,11 +16,12 @@ struct PromptHorizontalListView: View {
             HStack {
                 ForEach(PromptData.prompts, id: \.self) { item in
                     PromptCellView(prompt: item)
+                        
                         .onTapGesture {
                             isPromptSelected(item)
                         }
                 }
-            }
+            }.padding(.leading)
         }
     }
 }
@@ -38,13 +39,15 @@ private struct PromptCellView: View {
                 .font(.quickSand(size: 16, name: .medium))
                 .multilineTextAlignment(.leading)
                 .lineLimit(2)
+                .minimumScaleFactor(0.25)
         }
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 16)
                 .fill(.white)
         )
-        .frame(width: UIScreen.main.bounds.width * 0.5)
+        .frame(width: UIScreen.main.bounds.width * 0.6)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 
