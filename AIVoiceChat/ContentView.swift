@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject var permissionManager = AudioPermissionManager()
+    
     var body: some View {
         ZStack {
             Color.background
@@ -20,13 +23,23 @@ struct ContentView: View {
                         
                     Spacer()
                 }.padding(.leading)
+                Text("PERMISSION: \(permissionManager.permissonStatus.getStateMessage())")
                 
                 Spacer()
                 promptListView
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        
+        .onAppear {
+            permissionManager.startRequest { result in
+                switch result {
+                case .success(let success):
+                    print("success")
+                case .failure(let failure):
+                    print("failure")
+                }
+            }
+        }
         
     }
 }

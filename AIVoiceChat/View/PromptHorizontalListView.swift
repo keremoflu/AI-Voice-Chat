@@ -21,7 +21,7 @@ struct PromptHorizontalListView: View {
                             isPromptSelected(item)
                         }
                 }
-            }.padding(.leading)
+            }.padding(.horizontal)
         }
     }
 }
