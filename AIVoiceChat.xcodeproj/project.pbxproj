@@ -24,6 +24,9 @@
 		0C933F892E579C5A000CF37C /* AVAudioSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F882E579C5A000CF37C /* AVAudioSession+Extension.swift */; };
 		0C933F8B2E57C63C000CF37C /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F8A2E57C63C000CF37C /* AlertManager.swift */; };
 		0C933F8D2E57CA9C000CF37C /* AlertContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F8C2E57CA9C000CF37C /* AlertContent.swift */; };
+		0C933F902E57CFB6000CF37C /* UserBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F8F2E57CFB6000CF37C /* UserBubbleView.swift */; };
+		0C933F952E57D289000CF37C /* SpecificRoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F942E57D289000CF37C /* SpecificRoundedCorner.swift */; };
+		0C933F972E57D514000CF37C /* AIBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F962E57D514000CF37C /* AIBubbleView.swift */; };
 		0CB5E1382E57477F00A25378 /* AIVoiceChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB5E1342E57477F00A25378 /* AIVoiceChatApp.swift */; };
 		0CB5E1392E57477F00A25378 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB5E1362E57477F00A25378 /* ContentView.swift */; };
 		0CB5E13A2E57477F00A25378 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CB5E1352E57477F00A25378 /* Assets.xcassets */; };
@@ -48,6 +51,9 @@
 		0C933F882E579C5A000CF37C /* AVAudioSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVAudioSession+Extension.swift"; sourceTree = "<group>"; };
 		0C933F8A2E57C63C000CF37C /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		0C933F8C2E57CA9C000CF37C /* AlertContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertContent.swift; sourceTree = "<group>"; };
+		0C933F8F2E57CFB6000CF37C /* UserBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBubbleView.swift; sourceTree = "<group>"; };
+		0C933F942E57D289000CF37C /* SpecificRoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificRoundedCorner.swift; sourceTree = "<group>"; };
+		0C933F962E57D514000CF37C /* AIBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIBubbleView.swift; sourceTree = "<group>"; };
 		0CB5E1262E57477300A25378 /* AIVoiceChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIVoiceChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB5E1342E57477F00A25378 /* AIVoiceChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIVoiceChatApp.swift; sourceTree = "<group>"; };
 		0CB5E1352E57477F00A25378 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -105,6 +111,8 @@
 		0C433AF02E5755C900475090 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0C933F932E57D27C000CF37C /* Shape */,
+				0C933F8E2E57CF99000CF37C /* Chat */,
 				0C433AF12E5755D200475090 /* LanguagePickerView.swift */,
 				0C433AF92E57674B00475090 /* PromptHorizontalListView.swift */,
 			);
@@ -145,6 +153,23 @@
 				0C933F842E579735000CF37C /* SettingsURLHandler.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		0C933F8E2E57CF99000CF37C /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				0C933F8F2E57CFB6000CF37C /* UserBubbleView.swift */,
+				0C933F962E57D514000CF37C /* AIBubbleView.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		0C933F932E57D27C000CF37C /* Shape */ = {
+			isa = PBXGroup;
+			children = (
+				0C933F942E57D289000CF37C /* SpecificRoundedCorner.swift */,
+			);
+			path = Shape;
 			sourceTree = "<group>";
 		};
 		0CB5E11D2E57477300A25378 = {
@@ -262,15 +287,18 @@
 				0C433B002E576B7700475090 /* PromptData.swift in Sources */,
 				0C933F8D2E57CA9C000CF37C /* AlertContent.swift in Sources */,
 				0C433AFE2E576B5700475090 /* Prompt.swift in Sources */,
+				0C933F952E57D289000CF37C /* SpecificRoundedCorner.swift in Sources */,
 				0CB5E1382E57477F00A25378 /* AIVoiceChatApp.swift in Sources */,
 				0C433AFA2E57674B00475090 /* PromptHorizontalListView.swift in Sources */,
 				0C933F8B2E57C63C000CF37C /* AlertManager.swift in Sources */,
 				0CB5E1392E57477F00A25378 /* ContentView.swift in Sources */,
 				0C433AF52E5759A600475090 /* Country.swift in Sources */,
+				0C933F972E57D514000CF37C /* AIBubbleView.swift in Sources */,
 				0C933F822E57934F000CF37C /* AudioPermissionManager.swift in Sources */,
 				0C433AF82E575AE500475090 /* CountryData.swift in Sources */,
 				0C933F852E579735000CF37C /* SettingsURLHandler.swift in Sources */,
 				0C933F892E579C5A000CF37C /* AVAudioSession+Extension.swift in Sources */,
+				0C933F902E57CFB6000CF37C /* UserBubbleView.swift in Sources */,
 				0C433AEC2E574E8300475090 /* Font+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

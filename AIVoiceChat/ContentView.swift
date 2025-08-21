@@ -41,7 +41,7 @@ struct ContentView: View {
         .onAppear {
             permissionManager.startRequest { result in
                 switch result {
-                case .success(let success):
+                case .success(let _):
                     print("success")
                 case .failure(let failure):
                     print("failure: \(failure.localizedDescription)")
