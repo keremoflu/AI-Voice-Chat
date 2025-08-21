@@ -14,6 +14,8 @@
 		0C433AE82E574E1600475090 /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C433AE02E574E1600475090 /* Quicksand-Light.ttf */; };
 		0C433AEC2E574E8300475090 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C433AEB2E574E8300475090 /* Font+Extension.swift */; };
 		0C433AF22E5755D200475090 /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C433AF12E5755D200475090 /* LanguagePickerView.swift */; };
+		0C433AF52E5759A600475090 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C433AF42E5759A600475090 /* Country.swift */; };
+		0C433AF82E575AE500475090 /* CountryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C433AF72E575AE500475090 /* CountryData.swift */; };
 		0CB5E1382E57477F00A25378 /* AIVoiceChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB5E1342E57477F00A25378 /* AIVoiceChatApp.swift */; };
 		0CB5E1392E57477F00A25378 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB5E1362E57477F00A25378 /* ContentView.swift */; };
 		0CB5E13A2E57477F00A25378 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CB5E1352E57477F00A25378 /* Assets.xcassets */; };
@@ -28,6 +30,8 @@
 		0C433AE92E574E4600475090 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C433AEB2E574E8300475090 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
 		0C433AF12E5755D200475090 /* LanguagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePickerView.swift; sourceTree = "<group>"; };
+		0C433AF42E5759A600475090 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		0C433AF72E575AE500475090 /* CountryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryData.swift; sourceTree = "<group>"; };
 		0CB5E1262E57477300A25378 /* AIVoiceChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIVoiceChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB5E1342E57477F00A25378 /* AIVoiceChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIVoiceChatApp.swift; sourceTree = "<group>"; };
 		0CB5E1352E57477F00A25378 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -89,6 +93,22 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		0C433AF32E57599F00475090 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0C433AF42E5759A600475090 /* Country.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0C433AF62E575ADE00475090 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				0C433AF72E575AE500475090 /* CountryData.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		0CB5E11D2E57477300A25378 = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +128,8 @@
 		0CB5E1372E57477F00A25378 /* AIVoiceChat */ = {
 			isa = PBXGroup;
 			children = (
+				0C433AF62E575ADE00475090 /* Data */,
+				0C433AF32E57599F00475090 /* Model */,
 				0C433AF02E5755C900475090 /* View */,
 				0C433AEA2E574E7400475090 /* Extension */,
 				0C433ADD2E574E0D00475090 /* Resources */,
@@ -199,6 +221,8 @@
 				0C433AF22E5755D200475090 /* LanguagePickerView.swift in Sources */,
 				0CB5E1382E57477F00A25378 /* AIVoiceChatApp.swift in Sources */,
 				0CB5E1392E57477F00A25378 /* ContentView.swift in Sources */,
+				0C433AF52E5759A600475090 /* Country.swift in Sources */,
+				0C433AF82E575AE500475090 /* CountryData.swift in Sources */,
 				0C433AEC2E574E8300475090 /* Font+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

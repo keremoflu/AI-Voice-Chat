@@ -8,14 +8,41 @@
 import SwiftUI
 
 struct LanguagePickerView: View {
+    
+    let countryList = CountryData.countries
+    @Binding var picked: Country
+    
     var body: some View {
         
+        Menu {
+            ForEach(countryList, id: \.self) { item in
+                Button {
+                    picked = item
+                } label: {
+                    Text("\(item.flag) \(item.name)")
+                }
+            }
+        } label: {
+            PickerButtonView(flagname: picked.flag, name: picked.name)
+            .modifier(LanguagePickerBackground())
+            
+        }
+    }
+}
+
+private struct PickerButtonView: View {
+    
+    var flagname: String
+    var name: String
+    
+    var body: some View {
         HStack {
-            Text("🇬🇧 English")
+            Text("\(flagname) \(name)")
                 .font(.quickSand(size: 16, name: .medium))
+                
             Image(systemName: "chevron.down")
                 .font(.system(size: 16, weight: .light))
-        }.modifier(LanguagePickerBackground())
+        }.foregroundColor(.blackPrimary)
     }
 }
 
@@ -37,5 +64,5 @@ private struct LanguagePickerBackground: ViewModifier {
 
 
 #Preview {
-    LanguagePickerView()
+    LanguagePickerView(picked: .constant(Country(name: "English", flag: "🇬🇧", code: "en-US")))
 }
