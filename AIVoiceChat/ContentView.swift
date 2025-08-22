@@ -34,6 +34,7 @@ struct ContentView: View {
                 Text("PERMISSION: \(permissionManager.permissonStatus.getStateMessage())")
                 
                 Spacer()
+                RecordButton(contentState: .constant(.readyToRecord))
                 promptListView
             }
         }

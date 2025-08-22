@@ -14,11 +14,16 @@ struct LanguagePickerView: View {
     var body: some View {
         
         Menu {
-            ForEach(CountryData.countries, id: \.self) { item in
-                Button {
-                    picked = item
-                } label: {
-                    Text("\(item.flag) \(item.name)")
+            
+            VStack {
+                Text("Set Speech Language")
+                    .font(.quickSand(size: 12, name: .regular))
+                ForEach(CountryData.countries, id: \.self) { item in
+                    Button {
+                        picked = item
+                    } label: {
+                        Text("\(item.flag) \(item.name)")
+                    }
                 }
             }
         } label: {
