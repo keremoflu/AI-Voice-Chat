@@ -20,6 +20,13 @@ final class ChatGPTManager: Request {
     var httpMethod: HTTPMethod = .post
     var jsonDecoder = JSONDecoder()
     
+    private var urlSession: URLSession = {
+        let config = URLSessionConfiguration.default
+        config.timeoutIntervalForRequest = 30
+        config.timeoutIntervalForResource = 50
+        return URLSession(configuration: config)
+    }()
+    
     func buildRequest(url: URL, body: [String : Any]) throws -> URLRequest {
         do {
             let httpBody = try JSONSerialization.data(withJSONObject: body)
@@ -69,7 +76,7 @@ final class ChatGPTManager: Request {
         let urlRequest = try buildRequest(url: baseURL, body: requestBody)
     
         do {
-            let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
+            let (data, urlResponse) = try await urlSession.data(for: urlRequest)
             
             guard try isResponseSuccess(urlResponse: urlResponse) else {
                 throw ChatGPTError.invalidResponse
@@ -78,6 +85,8 @@ final class ChatGPTManager: Request {
             return try decodeData(data, responseType: ChatMessage.self)
                 
             
+        } catch let error as URLError where error.code == .timedOut {
+            throw ChatGPTError.timeOut
         } catch {
             throw ChatGPTError.requestFailed
         }
@@ -94,6 +103,7 @@ extension ChatGPTManager {
         case invalidResponse
         case decodeFailed(message: String)
         case httpResponseFailed(code: Int)
+        case timeOut
         
         var errorDescription: String? {
             switch self {
@@ -111,6 +121,8 @@ extension ChatGPTManager {
                 return "Decoding Failed. Error Message: \(message)"
             case .httpResponseFailed(let code):
                 return "HTTP Failed. Code: \(code)"
+            case .timeOut:
+                return "Network TimeOut Error. Please try again."
             @unknown default:
                 return "Unknown Error Occured, Please try again later."
             }
