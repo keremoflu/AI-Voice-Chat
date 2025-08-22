@@ -29,6 +29,7 @@
 		0C6D324F2E58A15100A8BA50 /* NetworkData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D324E2E58A15100A8BA50 /* NetworkData.swift */; };
 		0C6D32532E58A24700A8BA50 /* PromptBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32522E58A24700A8BA50 /* PromptBuilder.swift */; };
 		0C6D32552E58A6FB00A8BA50 /* ChatGPTData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32542E58A6FB00A8BA50 /* ChatGPTData.swift */; };
+		0C6D32582E58D82C00A8BA50 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32572E58D82C00A8BA50 /* NetworkManager.swift */; };
 		0C933F822E57934F000CF37C /* AudioPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F812E57934F000CF37C /* AudioPermissionManager.swift */; };
 		0C933F852E579735000CF37C /* SettingsURLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F842E579735000CF37C /* SettingsURLHandler.swift */; };
 		0C933F892E579C5A000CF37C /* AVAudioSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F882E579C5A000CF37C /* AVAudioSession+Extension.swift */; };
@@ -66,6 +67,7 @@
 		0C6D324E2E58A15100A8BA50 /* NetworkData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkData.swift; sourceTree = "<group>"; };
 		0C6D32522E58A24700A8BA50 /* PromptBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptBuilder.swift; sourceTree = "<group>"; };
 		0C6D32542E58A6FB00A8BA50 /* ChatGPTData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatGPTData.swift; sourceTree = "<group>"; };
+		0C6D32572E58D82C00A8BA50 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0C933F812E57934F000CF37C /* AudioPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPermissionManager.swift; sourceTree = "<group>"; };
 		0C933F842E579735000CF37C /* SettingsURLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsURLHandler.swift; sourceTree = "<group>"; };
 		0C933F882E579C5A000CF37C /* AVAudioSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVAudioSession+Extension.swift"; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				0C933F812E57934F000CF37C /* AudioPermissionManager.swift */,
 				0C933F8A2E57C63C000CF37C /* AlertManager.swift */,
 				0C6D324A2E58A02300A8BA50 /* ChatGPTManager.swift */,
+				0C6D32572E58D82C00A8BA50 /* NetworkManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				0C433AF82E575AE500475090 /* CountryData.swift in Sources */,
 				0C933F852E579735000CF37C /* SettingsURLHandler.swift in Sources */,
 				0C6D32442E58771100A8BA50 /* TestView.swift in Sources */,
+				0C6D32582E58D82C00A8BA50 /* NetworkManager.swift in Sources */,
 				0C933F892E579C5A000CF37C /* AVAudioSession+Extension.swift in Sources */,
 				0C933F902E57CFB6000CF37C /* UserBubbleView.swift in Sources */,
 				0C433AEC2E574E8300475090 /* Font+Extension.swift in Sources */,

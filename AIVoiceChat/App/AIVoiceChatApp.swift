@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct AIVoiceChatApp: App {
+    
+    @StateObject private var networkManager = NetworkManager()
+    
     var body: some Scene {
         WindowGroup {
             TestView()
+                .environmentObject(networkManager)
         }
     }
 }

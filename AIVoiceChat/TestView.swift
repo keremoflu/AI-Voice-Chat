@@ -10,25 +10,16 @@ import SwiftUI
 struct TestView: View {
     
     @State private var contentState: ContentViewState = .readyToRecord
+    @EnvironmentObject var networkManager: NetworkManager
     
     var body: some View {
         RecordButton(contentState: $contentState)
-            .onAppear {
-                Task {
-                    do {
-                        let response = try await ChatGPTManager.shared.requestChatMessage("Whats capital of turkey and give information about city")
-                        print("response: \(response)")
-                    } catch {
-                        print("error: \(error.localizedDescription)")
-                    }
-                    
-                    
-                    
-                }
-            }
+        Text("CURRENT: \(networkManager.isConnectionActive)")
+        
     }
 }
 
 #Preview {
     TestView()
+    
 }
