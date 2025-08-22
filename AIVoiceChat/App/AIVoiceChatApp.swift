@@ -14,7 +14,7 @@ struct AIVoiceChatApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TestView()
+            ContentView()
                 .environmentObject(networkManager)
         }
     }

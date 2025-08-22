@@ -32,20 +32,37 @@ struct ContentView: View {
                     LanguagePickerView(picked: .constant(Country(name: "Türkçe", flag: "🇹🇷", code: "tr-TR")))
                         
                     Spacer()
+                    
+                    SettingsPickerView { settingsPicked in
+                        print("settingsPicked: \(settingsPicked.rawValue)")
+                    }.padding(.trailing, 12)
+                    
                 }.padding(.leading)
                 
                 
-                //Chat Bubbles
-                ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 8) {
-                        ForEach(chatViews.indices, id: \.self) { item in
-                            chatViews[item]
+                //CHAT BUBBLE
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 8) {
+                            ForEach(chatViews.indices, id: \.self) { index in
+                                chatViews[index]
+                                    .id(index)
+                            }
+                        }.padding()
+                    }
+                    .onChange(of: chatViews.count) { _ in
+                        if let last = chatViews.indices.last {
+                            withAnimation {
+                                proxy.scrollTo(last, anchor: .bottom)
+                            }
                         }
-                    }.padding()
+                    }
                 }
                 
                 RecordButton(contentState: .constant(.readyToRecord))
-                promptListView
+                PromptView(didPromptSelected: { prompt in
+                    chatViews.append(AnyView(AIBubbleView(text: prompt.text)))
+                })
             }
         }
         
@@ -78,7 +95,7 @@ struct ContentView: View {
 //TODO: Remove This
 private func simulateChat(list: inout [AnyView]) {
     list.append(
-        AnyView(AIBubbleView())
+        AnyView(AIBubbleView(text: "Deneme People"))
     )
     
     list.append(
@@ -86,24 +103,38 @@ private func simulateChat(list: inout [AnyView]) {
     )
 }
 
-private var bubbleListView: some View {
-    ScrollView {
-        LazyVStack(alignment: .leading, spacing: 8) {
-            ForEach(0...20, id: \.self) { _ in
-                AIBubbleView()
-                UserBubbleView(text: "Deneme Text here")
+private struct PromptView: View {
+    
+    var didPromptSelected: (Prompt) -> Void
+    
+    var body: some View {
+        VStack (alignment: .leading, spacing: 8) {
+            Text("Ask Anything")
+                .font(.quickSand(size: 16, name: .regular))
+                .foregroundColor(.blackSecondary)
+                .padding(.leading)
+            PromptHorizontalListView { selectedPrompt in
+                didPromptSelected(selectedPrompt)
             }
-        }.padding()
+        }
+        
     }
 }
 
-private var promptListView: some View {
-    VStack (alignment: .leading, spacing: 8) {
-        Text("Ask Anything")
-            .font(.quickSand(size: 16, name: .regular))
-            .foregroundColor(.blackSecondary)
-            .padding(.leading)
-        PromptHorizontalListView { selectedPrompt in }
+private struct SettingsButton: View {
+    
+    var onAction: () -> Void
+    
+    var body: some View {
+        
+        Button  {
+            onAction()
+        } label: {
+            Image(systemName: "gearshape")
+                .font(.system(size: 24, weight: .light))
+        }
+        .foregroundColor(.blackPrimary)
+        .padding(.trailing, 8)
     }
 }
 

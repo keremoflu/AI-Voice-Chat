@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct AIBubbleView: View {
+    
+    var text: String
+    
     var body: some View {
-        Text("Right now in Istanbul, Turkey, the weather is sunny and around 28°C (83°F)")
+        Text(text)
             .modifier(AIBubbleStyleModifier())
        
     }
@@ -31,5 +34,5 @@ private struct AIBubbleStyleModifier: ViewModifier {
 }
 
 #Preview {
-    AIBubbleView()
+    AIBubbleView(text: "preview text")
 }
