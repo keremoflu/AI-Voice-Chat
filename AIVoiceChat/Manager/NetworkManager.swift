@@ -28,4 +28,8 @@ final class NetworkManager: ObservableObject {
         }
         networkMonitor.start(queue: queue)
     }
+    
+    deinit {
+        networkMonitor.cancel()
+    }
 }

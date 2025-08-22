@@ -25,7 +25,6 @@ struct RecordButton: View {
             }
         }
         
-        
     }
 }
 
