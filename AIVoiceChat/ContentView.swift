@@ -68,16 +68,16 @@ struct ContentView: View {
         
         
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .onAppear {
-//            permissionManager.startRequest { result in
-//                switch result {
-//                case .success( _):
-//                    print("success")
-//                case .failure(let failure):
-//                    print("failure: \(failure.localizedDescription)")
-//                }
-//            }
-//        }
+        .onAppear {
+            permissionManager.startRequest { result in
+                switch result {
+                case .success( _):
+                    print("permission success")
+                case .failure(let failure):
+                    print("failure: \(failure.localizedDescription)")
+                }
+            }
+        }
         .onAppear {
             simulateChat(list: &chatViews)
         }
@@ -140,6 +140,7 @@ private struct SettingsButton: View {
 
 #Preview {
     ContentView()
+        .environmentObject(NetworkManager())
 }
 
 /*
