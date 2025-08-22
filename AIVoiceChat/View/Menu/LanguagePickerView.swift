@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//TODO: Make this work for speech recognition
 struct LanguagePickerView: View {
     
     @Binding var picked: Country
@@ -21,6 +22,7 @@ struct LanguagePickerView: View {
                 ForEach(CountryData.countries, id: \.self) { item in
                     Button {
                         picked = item
+                        UserDefaultsManager.shared.speechCountry = picked
                     } label: {
                         Text("\(item.flag) \(item.name)")
                     }

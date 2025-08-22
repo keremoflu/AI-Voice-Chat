@@ -14,6 +14,7 @@ struct ContentView: View {
     @State var isShowSettingsAlert = false
     
     @State private var chatViews: [AnyView] = []
+    @State var pickedLanguage = UserDefaultsManager.shared.speechCountry
     
     init() {
         let alertManager = AlertManager()
@@ -29,7 +30,7 @@ struct ContentView: View {
             VStack {
                 
                 HStack {
-                    LanguagePickerView(picked: .constant(Country(name: "Türkçe", flag: "🇹🇷", code: "tr-TR")))
+                    LanguagePickerView(picked: $pickedLanguage)
                         
                     Spacer()
                     
