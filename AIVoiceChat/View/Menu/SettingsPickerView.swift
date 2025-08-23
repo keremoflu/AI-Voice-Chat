@@ -11,14 +11,11 @@ struct SettingsPickerView: View {
     
     enum SettingsSelection: String, CaseIterable {
         case about = "About"
-        case nightMode = "Night Mode"
         
         var systemIconName: String {
             switch self {
             case .about:
                 return "info.circle"
-            case .nightMode:
-                return "moon"
             }
         }
     }
