@@ -13,25 +13,28 @@ class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = []
     @Published var pickedLanguage = UserDefaultsManager.shared.speechCountry
     
-    
-    //TODO: Check if published needed
     @Published var audioPermissionManager: AudioPermissionManager
-    @Published var speechPermissionmanager: SpeechPermissionManager
-    @Published var alertManager: AlertManager
-    
     @Published var speechRecognitionManager: SpeechRecognitionManager
     @Published var contentState: ContentViewState = .readyToRecord
     
+    private let speechPermissionmanager: SpeechPermissionManager
+        
     var contentStatePublisher: AnyPublisher<ContentViewState, Never> {
         $contentState.eraseToAnyPublisher()
     }
     
-    init() {
-        let alertManager = AlertManager()
+    let alertManager: AlertManager
+
+    init(
+        alertManager: AlertManager = AlertManager(),
+        audioPermissionManager: AudioPermissionManager? = nil,
+        speechPermissionManager: SpeechPermissionManager? = nil,
+        speechRecognitionManager: SpeechRecognitionManager = SpeechRecognitionManager()
+    ) {
         self.alertManager = alertManager
-        self.audioPermissionManager = AudioPermissionManager(alertManager: alertManager)
-        self.speechPermissionmanager = SpeechPermissionManager(alertManager: alertManager)
-        self.speechRecognitionManager = SpeechRecognitionManager()
+        self.audioPermissionManager = audioPermissionManager ?? AudioPermissionManager(alertManager: alertManager)
+        self.speechPermissionmanager = speechPermissionManager ?? SpeechPermissionManager(alertManager: alertManager)
+        self.speechRecognitionManager = speechRecognitionManager
     }
     
     func recordingButtonTapped() {
@@ -42,7 +45,7 @@ class ChatViewModel: ObservableObject {
         }
         
         switch contentState {
-        case .readyToRecord: //START RECORD
+        case .readyToRecord:
             do {
                 print("record started")
                 contentState = .recording
@@ -53,14 +56,12 @@ class ChatViewModel: ObservableObject {
             }
             
             
-        case .recording: //RECORDING - wait transcript
+        case .recording:
             contentState = .loadingAfterRecord
             speechRecognitionManager.stopSpeechRecognition { [weak self] transcript in
                 guard let self else { return }
                 print("TRANSKRIPT: \(transcript)")
                 addMessage(Message(sender: .user, text: transcript))
-                
-                //TODO: If message is empty - cancel process
                 
                 //Forward to ChatGPT
                 Task { [weak self] in
@@ -102,7 +103,7 @@ class ChatViewModel: ObservableObject {
     
     func setBubbleStatusActive(_ bool: Bool) {
         if bool {
-            messages.append(Message(sender: .ai, text: "...")) //TODO: Find other solution here
+            messages.append(Message(sender: .ai, text: "..."))
         } else {
             if messages.last?.text == "..." {
                 messages.removeLast()
@@ -126,7 +127,6 @@ class ChatViewModel: ObservableObject {
         return audioStatus == .granted && speechStatus == .authorized
     }
     
-    
     func requestAllPermissions() {
 
         let audioStatus = audioPermissionManager.getPermissionStatus()
@@ -148,14 +148,16 @@ class ChatViewModel: ObservableObject {
 
         if audioStatus == .undetermined {
             audioPermissionManager.startRequest { [weak self] result in
-                switch result {
-                case .success:
-                    self?.requestSpeechRecognitionPermission()
-                case .failure:
-                    self?.alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
-                        self?.openSettings()
-                    }))
-                    return
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self?.requestSpeechRecognitionPermission()
+                    case .failure:
+                        self?.alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
+                            self?.openSettings()
+                        }))
+                        return
+                    }
                 }
             }
         } else if speechStatus == .notDetermined {
@@ -163,37 +165,20 @@ class ChatViewModel: ObservableObject {
         }
     }
     
-    func requestAllPermissions(isAllGranted: @escaping (Bool) -> Void) {
-
-        let audioStatus = audioPermissionManager.getPermissionStatus()
-        let speechStatus = speechPermissionmanager.permissionStatus
-        
-        if audioStatus == .denied {
-           isAllGranted(false)
-            return
-        }
-
-        if speechStatus == .denied || speechStatus == .restricted {
-            isAllGranted(false)
-            return
-        }
-
-        if audioStatus == .undetermined {
-            audioPermissionManager.startRequest { [weak self] result in
-                switch result {
-                case .success:
-                    self?.requestSpeechRecognitionPermission()
-                case .failure:
-                    isAllGranted(false)
-                    return
-                }
-            }
-        } else if speechStatus == .notDetermined {
-            requestSpeechRecognitionPermission()
-        }
-    }
-
-    // Konuşma tanıma izni isteme işlevini ayrı bir fonksiyonda tut
+       
+       private func showPermissionAlert(type: String, message: String) {
+           print("🔔 Showing alert for \(type)")
+           alertManager.showAlert(for: .goToSettings(
+               title: "\(type) Permission Required",
+               message: message,
+               primaryButtonText: "Go To Settings",
+               onAction: { [weak self] in
+                   print("🔧 Opening settings...")
+                   self?.openSettings()
+               }
+           ))
+       }
+    
     private func requestSpeechRecognitionPermission() {
         speechPermissionmanager.startRequest { [weak self] result in
             switch result {
@@ -221,7 +206,7 @@ class ChatViewModel: ObservableObject {
         }
     }
     
-    private func openSettings() {
+    func openSettings() {
         if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)
         }

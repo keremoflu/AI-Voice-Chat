@@ -12,10 +12,17 @@ struct ContentView: View {
     @State private var audioPlayer: AVAudioPlayer?
     
     @StateObject var chatVM = ChatViewModel()
+    @StateObject private var alertManager = AlertManager()
     
     @State var isShowSettingsAlert = false
     @State var pickedLanguage = UserDefaultsManager.shared.speechCountry
   
+    init() {
+       let alertManager = AlertManager()
+       _alertManager = StateObject(wrappedValue: alertManager)
+       _chatVM = StateObject(wrappedValue: ChatViewModel(alertManager: alertManager))
+    }
+    
     var body: some View {
         ZStack {
            
@@ -23,7 +30,6 @@ struct ContentView: View {
                 .ignoresSafeArea()
             
             VStack {
-                
                 //LANGUAGE PICKER, SETTINGS
                 ToolbarView(pickedLanguage: $pickedLanguage)
                 
@@ -33,7 +39,7 @@ struct ContentView: View {
                 //RECORD
                 RecordButton (contentState: $chatVM.contentState) {
                     //check permissions & record
-                   
+                    chatVM.recordingButtonTapped()
                 }
                 
                 //PROMPTS LIST
@@ -55,7 +61,12 @@ struct ContentView: View {
                 chatVM.requestAllPermissions()
             }
         }
-       
+        .alert(item: $alertManager.alert) { alertContent in
+            Alert(title: Text(alertContent.title),
+                  primaryButton: .default(Text(alertContent.primaryButtonText)){
+                chatVM.openSettings()
+            }, secondaryButton: .cancel())
+        }
         
     }
 }
@@ -151,17 +162,3 @@ private struct SettingsButton: View {
     ContentView()
         .environmentObject(NetworkManager())
 }
-
-/*
- ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 10) {
-                        // Your dynamic Text items go here
-                        ForEach(0..<10, id: \.self) { index in
-                            Text("Item \(index + 1)")
-                                .font(.system(size: 16))
-                                .foregroundColor(.black)
-                        }
-                    }
-                    .padding(.leading)  // Padding to avoid sticking to the edge
-                }
- */

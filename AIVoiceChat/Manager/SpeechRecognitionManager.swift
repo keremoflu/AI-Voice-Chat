@@ -25,12 +25,11 @@ final class SpeechRecognitionManager: ObservableObject, SpeechRecognizer {
     func startSpeechRecognition() throws {
        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
        let audioNote = avAudioEngine.inputNode
-       
-        //TODO: Enable if we need live transcription
-//        recognitionRequest?.shouldReportPartialResults = true
         
         //TODO: Fetch from User Default
-        let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+        let languageCode = UserDefaultsManager.shared.speechCountry.code
+        print("languageCode: \(languageCode)")
+        let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: languageCode))
         
         recognitionTask = speechRecognizer!.recognitionTask(with: recognitionRequest!) { result, error in //TODO: Remove Force Unwrap
             if let result = result {
@@ -54,13 +53,17 @@ final class SpeechRecognitionManager: ObservableObject, SpeechRecognizer {
         avAudioEngine.stop()
         avAudioEngine.inputNode.removeTap(onBus: 0)
         recognitionRequest?.endAudio()
-        recognitionTask?.cancel()
-        recognitionRequest = nil
-        recognitionTask = nil
         
-        let finalTranscription = speechTranscript
-        speechTranscript = ""
-        completion(finalTranscription)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            guard let self else { return }
+            recognitionTask?.cancel()
+            recognitionRequest = nil
+            recognitionTask = nil
+            
+            let finalTranscription = speechTranscript
+            speechTranscript = ""
+            completion(finalTranscription)
+        }
     }
 }
 
