@@ -12,11 +12,12 @@ import Combine
 class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = []
     @Published var pickedLanguage = UserDefaultsManager.shared.speechCountry
-    @Published var alertManager: AlertManager
+    
     
     //TODO: Check if published needed
     @Published var audioPermissionManager: AudioPermissionManager
     @Published var speechPermissionmanager: SpeechPermissionManager
+    @Published var alertManager: AlertManager
     
     @Published var speechRecognitionManager: SpeechRecognitionManager
     @Published var contentState: ContentViewState = .readyToRecord
@@ -26,10 +27,9 @@ class ChatViewModel: ObservableObject {
     }
     
     init() {
-        let alertManager = AlertManager()
-        self.alertManager = alertManager
-        self.audioPermissionManager = AudioPermissionManager(alertManager: alertManager)
-        self.speechPermissionmanager = SpeechPermissionManager(alertManager: alertManager)
+        self.alertManager = AlertManager()
+        self.audioPermissionManager = AudioPermissionManager()
+        self.speechPermissionmanager = SpeechPermissionManager()
         self.speechRecognitionManager = SpeechRecognitionManager()
     }
     
@@ -49,7 +49,6 @@ class ChatViewModel: ObservableObject {
             } catch {
                 print("speech error")
                 contentState = .readyToRecord
-                alertManager.showAlert(for: .infoMessage(title: "Recording Error", message: "unknown error occured", primaryButtonText: "OK", onAction: {}))
             }
             
             
@@ -59,6 +58,8 @@ class ChatViewModel: ObservableObject {
                 guard let self else { return }
                 print("TRANSKRIPT: \(transcript)")
                 addMessage(Message(sender: .user, text: transcript))
+                
+                //TODO: If message is empty - cancel process
                 
                 //Forward to ChatGPT
                 Task { [weak self] in
@@ -70,11 +71,7 @@ class ChatViewModel: ObservableObject {
                 }
             }
         case .loadingAfterRecord:
-//            DispatchQueue.main.async { [weak self] in
-//                guard let self else { return }
-//                alertManager.showAlert(for: .infoMessage(title: "Please", message: "please wait for loading...", primaryButtonText: "OK", onAction: {}))
-//            }
-            print("")
+            print("loadingAfterRecord case")
         }
     }
     
@@ -124,24 +121,57 @@ class ChatViewModel: ObservableObject {
     func isPermissionsValid() -> Bool {
         let audioStatus = audioPermissionManager.getPermissionStatus()
         let speechStatus = speechPermissionmanager.permissionStatus
-        print("PERMISSION STATUS: audio: \(audioStatus.rawValue) speech: \(speechStatus.rawValue)")
-        
+        print("isPermissionsValid: \(audioStatus == .granted && speechStatus == .authorized)")
         return audioStatus == .granted && speechStatus == .authorized
     }
     
     
     func requestAllPermissions() {
-        //TODO: Must Check. After disabling it doesnt open "go to settings"
-        if audioPermissionManager.getPermissionStatus() != .granted {
-            audioPermissionManager.startRequest { status in
-                print("requestAllPermissions (Audio Status): \(status)")
+        let audioStatus = audioPermissionManager.getPermissionStatus()
+        let speechStatus = speechPermissionmanager.permissionStatus
+        
+        if audioStatus == .denied {
+            alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
+                self?.openSettings()
+            }))
+            return
+        }
+
+        if speechStatus == .denied || speechStatus == .restricted {
+            alertManager.showAlert(for: .goToSettings(title: "Speech Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
+                self?.openSettings()
+            }))
+            return
+        }
+
+        if audioStatus == .undetermined {
+            audioPermissionManager.startRequest { [weak self] result in
+                switch result {
+                case .success:
+                    self?.requestSpeechRecognitionPermission()
+                case .failure:
+                    self?.alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
+                        self?.openSettings()
+                    }))
+                    return
+                }
             }
-        } else if speechPermissionmanager.permissionStatus != .authorized {
-            speechPermissionmanager.requestSpeechPermission { status in
-                print("requestAllPermissions (Speech Status): \(status)")
+        } else if speechStatus == .notDetermined {
+            requestSpeechRecognitionPermission()
+        }
+    }
+
+    // Konuşma tanıma izni isteme işlevini ayrı bir fonksiyonda tut
+    private func requestSpeechRecognitionPermission() {
+        speechPermissionmanager.startRequest { [weak self] result in
+            switch result {
+            case .success:
+                print("Speech recognition permission granted.")
+            case .failure:
+                self?.alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
+                    self?.openSettings()
+                }))
             }
-        } else {
-            //all good
         }
     }
     
@@ -153,9 +183,8 @@ class ChatViewModel: ObservableObject {
             case .success:
                 print("permission success")
             case .failure(_):
-                alertManager.showAlert(for: .infoMessage(title: "Permission denied", message: "Permission is required. Please re-enable to use it", primaryButtonText: "OK", onAction: {
-                    
-                }))
+                print("")
+                //TODO: Error Here
             }
         }
     }
