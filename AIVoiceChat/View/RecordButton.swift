@@ -16,7 +16,6 @@ struct RecordButton: View {
         
         Button {
             action()
-            print("tapo!")
         } label: {
             switch contentState {
             case .readyToRecord:

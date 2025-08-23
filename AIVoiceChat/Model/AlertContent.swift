@@ -11,5 +11,6 @@ struct AlertContent: Identifiable {
     let id = UUID()
     let title: String
     let message: String
+    let primaryButtonText: String
     let primaryAction: () -> Void
 }

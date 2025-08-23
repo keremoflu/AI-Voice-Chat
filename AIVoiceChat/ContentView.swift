@@ -11,7 +11,6 @@ import AVFoundation
 struct ContentView: View {
     @State private var audioPlayer: AVAudioPlayer?
     
-    
     @StateObject var chatVM = ChatViewModel()
     
     @State var isShowSettingsAlert = false
@@ -34,7 +33,7 @@ struct ContentView: View {
                 //RECORD
                 RecordButton (contentState: $chatVM.contentState) {
                     //check permissions & record
-                    chatVM.recordingButtonTapped()
+                   
                 }
                 
                 //PROMPTS LIST
@@ -52,14 +51,11 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             chatVM.simulateChat()
+            if !chatVM.isPermissionsValid(){
+                chatVM.requestAllPermissions()
+            }
         }
-        .alert(item: $chatVM.alertManager.alert) { alert in
-            Alert(
-                title: Text(alert.title),
-                primaryButton: .cancel(),
-                secondaryButton: .default(Text(alert.primaryButtonText),
-                action: alert.primaryAction))
-        }
+       
         
     }
 }

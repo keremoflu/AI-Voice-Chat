@@ -27,9 +27,10 @@ class ChatViewModel: ObservableObject {
     }
     
     init() {
-        self.alertManager = AlertManager()
-        self.audioPermissionManager = AudioPermissionManager()
-        self.speechPermissionmanager = SpeechPermissionManager()
+        let alertManager = AlertManager()
+        self.alertManager = alertManager
+        self.audioPermissionManager = AudioPermissionManager(alertManager: alertManager)
+        self.speechPermissionmanager = SpeechPermissionManager(alertManager: alertManager)
         self.speechRecognitionManager = SpeechRecognitionManager()
     }
     
@@ -127,6 +128,7 @@ class ChatViewModel: ObservableObject {
     
     
     func requestAllPermissions() {
+
         let audioStatus = audioPermissionManager.getPermissionStatus()
         let speechStatus = speechPermissionmanager.permissionStatus
         
@@ -153,6 +155,36 @@ class ChatViewModel: ObservableObject {
                     self?.alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
                         self?.openSettings()
                     }))
+                    return
+                }
+            }
+        } else if speechStatus == .notDetermined {
+            requestSpeechRecognitionPermission()
+        }
+    }
+    
+    func requestAllPermissions(isAllGranted: @escaping (Bool) -> Void) {
+
+        let audioStatus = audioPermissionManager.getPermissionStatus()
+        let speechStatus = speechPermissionmanager.permissionStatus
+        
+        if audioStatus == .denied {
+           isAllGranted(false)
+            return
+        }
+
+        if speechStatus == .denied || speechStatus == .restricted {
+            isAllGranted(false)
+            return
+        }
+
+        if audioStatus == .undetermined {
+            audioPermissionManager.startRequest { [weak self] result in
+                switch result {
+                case .success:
+                    self?.requestSpeechRecognitionPermission()
+                case .failure:
+                    isAllGranted(false)
                     return
                 }
             }
