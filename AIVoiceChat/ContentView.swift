@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ContentView: View {
+    @State private var audioPlayer: AVAudioPlayer?
+    
     
     @StateObject var chatVM = ChatViewModel()
     
     @State var isShowSettingsAlert = false
     @State var pickedLanguage = UserDefaultsManager.shared.speechCountry
   
-    
     var body: some View {
         ZStack {
            
@@ -30,24 +32,35 @@ struct ContentView: View {
                 ChatMessagesView(chatVM: chatVM)
                 
                 //RECORD
-                RecordButton(contentState: .constant(.readyToRecord))
+                RecordButton (contentState: $chatVM.contentState) {
+                    //check permissions & record
+                    chatVM.recordingButtonTapped()
+                }
                 
                 //PROMPTS LIST
                 PromptView(didPromptSelected: { prompt in
-                    chatVM.messages.append(Message(sender: .ai, text: prompt.text))
+                    chatVM.messages.append(Message(sender: .user, text: prompt.text))
                 })
             }
         }
-        
+//        .onReceive(chatVM.contentStatePublisher, perform: { newState in
+//            switch newState {
+//                
+//            case .recording, .readyToRecord:
+//                chatVM.setBubbleStatusActive(false)
+//            case .loadingAfterRecord:
+//                chatVM.setBubbleStatusActive(true)
+//            }
+//        })
         
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onAppear {
-            chatVM.audioPermissionManager.startRequest { result in
-                print(result)
-            }
-            
-            print(chatVM.isPermissionsValid())
-        }
+//        .onAppear {
+//            chatVM.audioPermissionManager.startRequest { result in
+//                print(result)
+//            }
+//            
+//           
+//        }
         .onAppear {
             chatVM.simulateChat()
         }
@@ -55,11 +68,52 @@ struct ContentView: View {
             Alert(
                 title: Text(alert.title),
                 primaryButton: .cancel(),
-                secondaryButton: .default(Text("Go To Settings"),
+                secondaryButton: .default(Text(alert.primaryButtonText),
                 action: alert.primaryAction))
         }
         
     }
+    
+   
+    
+//    private func recordingButtonTapped() {
+//        
+//        guard chatVM.isPermissionsValid() else {
+//            chatVM.requestPermissions()
+//            return
+//        }
+//        
+//        
+//            if chatVM.contentState == .recording {
+//                chatVM.recordManager.stopRecording()
+//                chatVM.contentState = .readyToRecord
+//                do {
+//                    
+//                    print("Listening started")
+//                    print("recorded URL: \(chatVM.recordedURL)")
+//                    
+//                    if let recordedurl = chatVM.recordedURL {
+//                        audioPlayer = try AVAudioPlayer(contentsOf: recordedurl)
+//                        audioPlayer?.prepareToPlay()
+//                        audioPlayer?.play()
+//                    } else {
+//                        print("Empty Recorded URL")
+//                    }
+//                    
+//                } catch {
+//                    
+//                }
+//            } else {
+//                chatVM.contentState = .recording
+//                chatVM.recordManager.startRecording { url in
+//                    chatVM.recordedURL = url
+//                }
+//            }
+//            
+//            
+//            
+//        }
+    
 }
 
 //TODO: Remove This
@@ -99,14 +153,14 @@ private struct ChatMessagesView: View {
                                 Spacer()
                                 UserBubbleView(text: message.text)
                             }
-                        }
+                        }.id(message.id)
                     }
                 }.padding()
             }
             .onChange(of: chatVM.messages.count) { _ in
-                if let last = chatVM.messages.indices.last {
+                if let last = chatVM.messages.last {
                     withAnimation {
-                        proxy.scrollTo(last, anchor: .bottom)
+                        proxy.scrollTo(last.id, anchor: .bottom)
                     }
                 }
             }

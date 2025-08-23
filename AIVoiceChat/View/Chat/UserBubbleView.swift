@@ -18,7 +18,7 @@ struct UserBubbleView: View {
     }
 }
 
-private struct UserBubbleStyleModifier: ViewModifier {
+struct UserBubbleStyleModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.quickSand(size: 16, name: .medium))

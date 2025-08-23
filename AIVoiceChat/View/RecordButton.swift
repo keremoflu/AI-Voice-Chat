@@ -9,21 +9,50 @@ import SwiftUI
 
 struct RecordButton: View {
     
-    //Convert to Binding
     @Binding var contentState: ContentViewState
+    var action: () -> Void
     
     var body: some View {
         
         Button {
-            contentState = .recording
+            action()
             print("tapo!")
         } label: {
-            if contentState == .recording {
-                RecordingButton()
-            } else {
+            switch contentState {
+            case .readyToRecord:
                 IdleRecordButton()
+            case .recording:
+                RecordingButton()
+            case .loadingAfterRecord:
+                LoadingRecordButton()
             }
         }
+        
+    }
+}
+
+struct LoadingRecordButton: View {
+    @State private var isAnimating = false
+    
+    var body: some View {
+        
+        Image(systemName: "progress.indicator")
+            .font(.title)
+            .foregroundColor(.white)
+            .padding(32)
+            .background(
+                Circle()
+                    .foregroundColor(.grayPrimary)
+                    .padding(8)
+                    .background(
+                        Circle().foregroundColor(.grayPrimary).opacity(0.16)
+                    )
+            ).rotationEffect(.degrees(isAnimating ? 360 : 0))
+            .onAppear {
+                withAnimation(.linear(duration: 1).repeatForever(autoreverses: true)) {
+                    isAnimating = true
+                }
+            }
         
     }
 }
@@ -73,6 +102,8 @@ struct RecordingButton: View {
     }
 }
 #Preview {
-    RecordButton(contentState: .constant(.readyToRecord))
+    RecordButton(contentState: .constant(.readyToRecord)) {
+        
+    }
 }
 
