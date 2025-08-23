@@ -11,9 +11,9 @@ struct ContentView: View {
     
     @StateObject var alertManager = AlertManager()
     @StateObject var permissionManager: AudioPermissionManager
-    @State var isShowSettingsAlert = false
+    @StateObject var chatVM = ChatViewModel()
     
-    @State private var chatViews: [AnyView] = []
+    @State var isShowSettingsAlert = false
     @State var pickedLanguage = UserDefaultsManager.shared.speechCountry
     
     init() {
@@ -24,6 +24,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
+           
             Color.background
                 .ignoresSafeArea()
             
@@ -45,14 +46,21 @@ struct ContentView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 8) {
-                            ForEach(chatViews.indices, id: \.self) { index in
-                                chatViews[index]
-                                    .id(index)
+                            ForEach(chatVM.messages, id: \.self) { message in
+                                HStack {
+                                    if message.sender == .ai {
+                                        AIBubbleView(text: message.text)
+                                        Spacer()
+                                    } else {
+                                        Spacer()
+                                        UserBubbleView(text: message.text)
+                                    }
+                                }
                             }
                         }.padding()
                     }
-                    .onChange(of: chatViews.count) { _ in
-                        if let last = chatViews.indices.last {
+                    .onChange(of: chatVM.messages.count) { _ in
+                        if let last = chatVM.messages.indices.last {
                             withAnimation {
                                 proxy.scrollTo(last, anchor: .bottom)
                             }
@@ -62,7 +70,7 @@ struct ContentView: View {
                 
                 RecordButton(contentState: .constant(.readyToRecord))
                 PromptView(didPromptSelected: { prompt in
-                    chatViews.append(AnyView(AIBubbleView(text: prompt.text)))
+                    chatVM.messages.append(Message(sender: .ai, text: prompt.text))
                 })
             }
         }
@@ -80,7 +88,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            simulateChat(list: &chatViews)
+            chatVM.simulateChat()
         }
         .alert(item: $alertManager.alert) { alert in
             Alert(
@@ -94,15 +102,7 @@ struct ContentView: View {
 }
 
 //TODO: Remove This
-private func simulateChat(list: inout [AnyView]) {
-    list.append(
-        AnyView(AIBubbleView(text: "Deneme People"))
-    )
-    
-    list.append(
-        AnyView(UserBubbleView(text: "Hello people this is my app!"))
-    )
-}
+
 
 private struct PromptView: View {
     
