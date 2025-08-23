@@ -9,18 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @StateObject var alertManager = AlertManager()
-    @StateObject var permissionManager: AudioPermissionManager
     @StateObject var chatVM = ChatViewModel()
     
     @State var isShowSettingsAlert = false
     @State var pickedLanguage = UserDefaultsManager.shared.speechCountry
-    
-    init() {
-        let alertManager = AlertManager()
-        _alertManager = StateObject(wrappedValue: alertManager)
-        _permissionManager = StateObject(wrappedValue: AudioPermissionManager(alertManager: alertManager))
-    }
+  
     
     var body: some View {
         ZStack {
@@ -30,45 +23,16 @@ struct ContentView: View {
             
             VStack {
                 
-                HStack {
-                    LanguagePickerView(picked: $pickedLanguage)
-                        
-                    Spacer()
-                    
-                    SettingsPickerView { settingsPicked in
-                        print("settingsPicked: \(settingsPicked.rawValue)")
-                    }.padding(.trailing, 12)
-                    
-                }.padding(.leading)
-                
+                //LANGUAGE PICKER, SETTINGS
+                ToolbarView(pickedLanguage: $pickedLanguage)
                 
                 //CHAT BUBBLE
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        LazyVStack(alignment: .leading, spacing: 8) {
-                            ForEach(chatVM.messages, id: \.self) { message in
-                                HStack {
-                                    if message.sender == .ai {
-                                        AIBubbleView(text: message.text)
-                                        Spacer()
-                                    } else {
-                                        Spacer()
-                                        UserBubbleView(text: message.text)
-                                    }
-                                }
-                            }
-                        }.padding()
-                    }
-                    .onChange(of: chatVM.messages.count) { _ in
-                        if let last = chatVM.messages.indices.last {
-                            withAnimation {
-                                proxy.scrollTo(last, anchor: .bottom)
-                            }
-                        }
-                    }
-                }
+                ChatMessagesView(chatVM: chatVM)
                 
+                //RECORD
                 RecordButton(contentState: .constant(.readyToRecord))
+                
+                //PROMPTS LIST
                 PromptView(didPromptSelected: { prompt in
                     chatVM.messages.append(Message(sender: .ai, text: prompt.text))
                 })
@@ -78,19 +42,16 @@ struct ContentView: View {
         
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
-            permissionManager.startRequest { result in
-                switch result {
-                case .success( _):
-                    print("permission success")
-                case .failure(let failure):
-                    print("failure: \(failure.localizedDescription)")
-                }
+            chatVM.audioPermissionManager.startRequest { result in
+                print(result)
             }
+            
+            print(chatVM.isPermissionsValid())
         }
         .onAppear {
             chatVM.simulateChat()
         }
-        .alert(item: $alertManager.alert) { alert in
+        .alert(item: $chatVM.alertManager.alert) { alert in
             Alert(
                 title: Text(alert.title),
                 primaryButton: .cancel(),
@@ -103,6 +64,55 @@ struct ContentView: View {
 
 //TODO: Remove This
 
+private struct ToolbarView: View {
+    
+    @Binding var pickedLanguage: Country
+    
+    var body: some View {
+        HStack {
+            LanguagePickerView(picked: $pickedLanguage)
+                
+            Spacer()
+            
+            SettingsPickerView { settingsPicked in
+                print("settingsPicked: \(settingsPicked.rawValue)")
+            }.padding(.trailing, 12)
+            
+        }.padding(.leading)
+    }
+}
+
+private struct ChatMessagesView: View {
+    
+    @StateObject var chatVM: ChatViewModel
+    
+    var body: some View {
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 8) {
+                    ForEach(chatVM.messages, id: \.self) { message in
+                        HStack {
+                            if message.sender == .ai {
+                                AIBubbleView(text: message.text)
+                                Spacer()
+                            } else {
+                                Spacer()
+                                UserBubbleView(text: message.text)
+                            }
+                        }
+                    }
+                }.padding()
+            }
+            .onChange(of: chatVM.messages.count) { _ in
+                if let last = chatVM.messages.indices.last {
+                    withAnimation {
+                        proxy.scrollTo(last, anchor: .bottom)
+                    }
+                }
+            }
+        }
+    }
+}
 
 private struct PromptView: View {
     
