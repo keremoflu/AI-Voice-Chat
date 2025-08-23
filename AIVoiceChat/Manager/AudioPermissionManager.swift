@@ -27,7 +27,7 @@ final class AudioPermissionManager: ObservableObject {
             requestRecordPermission { [weak self] isGranted in
                 guard let self else {
                     print("weak fail")
-                    responseState(.failure(.unknown))
+                    responseState(.failure(.disconnect))
                     return
                 }
                 
@@ -84,6 +84,8 @@ extension AudioPermissionManager {
         case disabled
         case unknown
         case failedOpenSettings
+        case showRequestFailed
+        case disconnect
         
         var errorDescription: String? {
             switch self {
@@ -93,6 +95,10 @@ extension AudioPermissionManager {
                 return "Unknown Permission State, please try again later."
             case .failedOpenSettings:
                 return "We're failed to open settings. Please go settings and enable microphone permission."
+            case .showRequestFailed:
+                return "We've tried to show permission but failed. Please go settings and enable microphone permission."
+            case .disconnect:
+                return "We've lost disconnection with permissions. Please go settings and enable microphone permission"
             }
         }
     }
