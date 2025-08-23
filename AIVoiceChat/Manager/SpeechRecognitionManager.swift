@@ -57,7 +57,10 @@ final class SpeechRecognitionManager: ObservableObject, SpeechRecognizer {
         recognitionTask?.cancel()
         recognitionRequest = nil
         recognitionTask = nil
-        completion(speechTranscript)
+        
+        let finalTranscription = speechTranscript
+        speechTranscript = ""
+        completion(finalTranscription)
     }
 }
 

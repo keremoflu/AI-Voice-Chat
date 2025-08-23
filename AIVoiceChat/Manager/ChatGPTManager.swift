@@ -67,7 +67,7 @@ final class ChatGPTManager: Request {
         }
     }
     
-    func requestChatMessage(_ prompt: String) async throws -> ChatMessage {
+    func requestChatMessage(_ prompt: String) async throws -> ChatGPTResponse {
         guard let baseURL = URL(string: baseURL) else {
             throw ChatGPTError.invalidURL
         }
@@ -82,7 +82,7 @@ final class ChatGPTManager: Request {
                 throw ChatGPTError.invalidResponse
             }
             
-            return try decodeData(data, responseType: ChatMessage.self)
+            return try decodeData(data, responseType: ChatGPTResponse.self)
                 
             
         } catch let error as URLError where error.code == .timedOut {
