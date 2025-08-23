@@ -14,8 +14,9 @@ struct ContentView: View {
     @StateObject var chatVM = ChatViewModel()
     @StateObject private var alertManager = AlertManager()
     
-    @State var isShowSettingsAlert = false
+    @State var isAboutSheetVisible = false
     @State var pickedLanguage = UserDefaultsManager.shared.speechCountry
+    @State var activeSettingsSheet: SettingsMenuData? = nil
   
     init() {
        let alertManager = AlertManager()
@@ -31,7 +32,9 @@ struct ContentView: View {
             
             VStack {
                 //LANGUAGE PICKER, SETTINGS
-                ToolbarView(pickedLanguage: $pickedLanguage)
+                ToolbarView(pickedLanguage: $pickedLanguage) { selection in
+                    activeSettingsSheet = selection
+                }
                 
                 //CHAT BUBBLE
                 ChatMessagesView(chatVM: chatVM)
@@ -44,7 +47,12 @@ struct ContentView: View {
                 
                 //PROMPTS LIST
                 PromptView(didPromptSelected: { prompt in
-                    chatVM.messages.append(Message(id: UUID(), sender: .user, text: prompt.text))
+                    chatVM.messages.append(
+                        Message(
+                            id: UUID(),
+                            sender: .user,
+                            text: prompt.text))
+                    Task { try await chatVM.sendChatGPTRequest(prompt: prompt.text) }
                 })
             }
             
@@ -67,7 +75,19 @@ struct ContentView: View {
                 chatVM.openSettings()
             }, secondaryButton: .cancel())
         }
+        .sheet(item: $activeSettingsSheet) { selection in
+            sheetView(for: selection)
+        }
         
+    }
+}
+
+
+private func sheetView (for settingsMenu: SettingsMenuData) -> some View {
+    switch settingsMenu {
+    case .about:
+        return AboutSheet()
+            .frame(maxWidth: .infinity, maxHeight: 300)
     }
 }
 
@@ -76,16 +96,24 @@ struct ContentView: View {
 private struct ToolbarView: View {
     
     @Binding var pickedLanguage: Country
+    var onSettingsSelected: (SettingsMenuData) -> Void
     
     var body: some View {
         HStack {
             LanguagePickerView(picked: $pickedLanguage)
+                .accessibilityLabel("Language Button")
                 
             Spacer()
             
             SettingsPickerView { settingsPicked in
-                print("settingsPicked: \(settingsPicked.rawValue)")
-            }.padding(.trailing, 12)
+                switch settingsPicked {
+                case .about:
+                    onSettingsSelected(.about)
+                }
+            }
+            .padding(.trailing, 12)
+            .accessibilityLabel("Settings Menu Button")
+            
             
         }.padding(.leading)
     }

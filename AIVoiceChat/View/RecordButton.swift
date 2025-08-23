@@ -25,7 +25,7 @@ struct RecordButton: View {
             case .loadingAfterRecord:
                 LoadingRecordButton()
             }
-        }
+        }.accessibilityLabel("Audio Record Button")
         
     }
 }
