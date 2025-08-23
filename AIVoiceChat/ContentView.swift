@@ -44,7 +44,7 @@ struct ContentView: View {
                 
                 //PROMPTS LIST
                 PromptView(didPromptSelected: { prompt in
-                    chatVM.messages.append(Message(sender: .user, text: prompt.text))
+                    chatVM.messages.append(Message(id: UUID(), sender: .user, text: prompt.text))
                 })
             }
             
@@ -56,7 +56,7 @@ struct ContentView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
-            chatVM.simulateChat()
+            
             if !chatVM.isPermissionsValid(){
                 chatVM.requestAllPermissions()
             }
@@ -111,6 +111,13 @@ private struct ChatMessagesView: View {
                         }.id(message.id)
                     }
                 }.padding()
+            }
+            .onAppear {
+                if let last = chatVM.messages.last {
+                    withAnimation {
+                        proxy.scrollTo(last.id, anchor: .bottom)
+                    }
+                }
             }
             .onChange(of: chatVM.messages.count) { _ in
                 if let last = chatVM.messages.last {

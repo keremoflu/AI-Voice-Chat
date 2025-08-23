@@ -12,11 +12,12 @@ struct AIVoiceChatApp: App {
     
     //TODO: Activate Again
 //    @StateObject private var networkManager = NetworkManager()
+    let persistance = PersistanceController.shared
     
     var body: some Scene {
         WindowGroup {
-            TestView()
-               
+            ContentView()
+                .environment(\.managedObjectContext, persistance.container.viewContext)
         }
     }
 }

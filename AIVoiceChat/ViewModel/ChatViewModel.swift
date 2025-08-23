@@ -12,17 +12,12 @@ import Combine
 class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = []
     @Published var pickedLanguage = UserDefaultsManager.shared.speechCountry
-    
     @Published var audioPermissionManager: AudioPermissionManager
     @Published var speechRecognitionManager: SpeechRecognitionManager
     @Published var contentState: ContentViewState = .readyToRecord
     
+    private let context = PersistanceController.shared.container.viewContext
     private let speechPermissionmanager: SpeechPermissionManager
-        
-    var contentStatePublisher: AnyPublisher<ContentViewState, Never> {
-        $contentState.eraseToAnyPublisher()
-    }
-    
     let alertManager: AlertManager
 
     init(
@@ -35,6 +30,13 @@ class ChatViewModel: ObservableObject {
         self.audioPermissionManager = audioPermissionManager ?? AudioPermissionManager(alertManager: alertManager)
         self.speechPermissionmanager = speechPermissionManager ?? SpeechPermissionManager(alertManager: alertManager)
         self.speechRecognitionManager = speechRecognitionManager
+        
+        loadCoreDataMessages()
+    }
+    
+    func loadCoreDataMessages() {
+        messages = CoreDataManager.shared.fetchMessages(context)
+        if messages.count == 0 { setFirstLoading() }
     }
     
     func recordingButtonTapped() {
@@ -61,7 +63,7 @@ class ChatViewModel: ObservableObject {
             speechRecognitionManager.stopSpeechRecognition { [weak self] transcript in
                 guard let self else { return }
                 print("TRANSKRIPT: \(transcript)")
-                addMessage(Message(sender: .user, text: transcript))
+                addMessage(Message(id: UUID(), sender: .user, text: transcript))
                 
                 //Forward to ChatGPT
                 Task { [weak self] in
@@ -90,7 +92,7 @@ class ChatViewModel: ObservableObject {
             }
             await MainActor.run {
                 setBubbleStatusActive(false)
-                addMessage(Message(sender: .ai, text: resultText))
+                addMessage(Message(id: UUID(), sender: .ai, text: resultText))
             }
         } catch {
             //TODO: Fill Error
@@ -103,7 +105,7 @@ class ChatViewModel: ObservableObject {
     
     func setBubbleStatusActive(_ bool: Bool) {
         if bool {
-            messages.append(Message(sender: .ai, text: "..."))
+            messages.append(Message(id: UUID(), sender: .ai, text: "..."))
         } else {
             if messages.last?.text == "..." {
                 messages.removeLast()
@@ -113,11 +115,13 @@ class ChatViewModel: ObservableObject {
     
     private func addMessage(_ message: Message) {
         messages.append(message)
+        CoreDataManager.shared.saveMessage(message, context: context)
     }
     
-    func simulateChat() {
-        messages.append(Message(sender: .ai, text: "I am AI"))
-        messages.append(Message(sender: .user, text: "Hello, I am User"))
+    func setFirstLoading() {
+        addMessage(
+            Message(id: UUID(), sender: .ai, text: "Hello, how can I help you?")
+        )
     }
     
     func isPermissionsValid() -> Bool {
