@@ -16,7 +16,6 @@ struct GlowEffect: View {
     
     var body: some View {
         ZStack {
-            // Your main content
             Color.clear
                 .ignoresSafeArea()
 

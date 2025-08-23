@@ -42,25 +42,14 @@ struct ContentView: View {
                     chatVM.messages.append(Message(sender: .user, text: prompt.text))
                 })
             }
+            
+            if chatVM.contentState == .recording {
+                GlowEffect(isAnimating: .constant(true))
+                    .transition(.opacity)
+            }
+
         }
-//        .onReceive(chatVM.contentStatePublisher, perform: { newState in
-//            switch newState {
-//                
-//            case .recording, .readyToRecord:
-//                chatVM.setBubbleStatusActive(false)
-//            case .loadingAfterRecord:
-//                chatVM.setBubbleStatusActive(true)
-//            }
-//        })
-        
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .onAppear {
-//            chatVM.audioPermissionManager.startRequest { result in
-//                print(result)
-//            }
-//            
-//           
-//        }
         .onAppear {
             chatVM.simulateChat()
         }
@@ -73,47 +62,6 @@ struct ContentView: View {
         }
         
     }
-    
-   
-    
-//    private func recordingButtonTapped() {
-//        
-//        guard chatVM.isPermissionsValid() else {
-//            chatVM.requestPermissions()
-//            return
-//        }
-//        
-//        
-//            if chatVM.contentState == .recording {
-//                chatVM.recordManager.stopRecording()
-//                chatVM.contentState = .readyToRecord
-//                do {
-//                    
-//                    print("Listening started")
-//                    print("recorded URL: \(chatVM.recordedURL)")
-//                    
-//                    if let recordedurl = chatVM.recordedURL {
-//                        audioPlayer = try AVAudioPlayer(contentsOf: recordedurl)
-//                        audioPlayer?.prepareToPlay()
-//                        audioPlayer?.play()
-//                    } else {
-//                        print("Empty Recorded URL")
-//                    }
-//                    
-//                } catch {
-//                    
-//                }
-//            } else {
-//                chatVM.contentState = .recording
-//                chatVM.recordManager.startRecording { url in
-//                    chatVM.recordedURL = url
-//                }
-//            }
-//            
-//            
-//            
-//        }
-    
 }
 
 //TODO: Remove This
@@ -160,7 +108,7 @@ private struct ChatMessagesView: View {
             .onChange(of: chatVM.messages.count) { _ in
                 if let last = chatVM.messages.last {
                     withAnimation {
-                        proxy.scrollTo(last.id, anchor: .bottom)
+                        proxy.scrollTo(last.id, anchor: .top)
                     }
                 }
             }
