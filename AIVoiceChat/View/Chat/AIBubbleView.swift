@@ -30,6 +30,7 @@ struct AIBubbleStyleModifier: ViewModifier {
         )
         .compositingGroup()
         .shadow(color: .grayPrimary, radius: 4)
+        .bounceOnAppear()
     }
 }
 

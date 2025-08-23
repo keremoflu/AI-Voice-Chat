@@ -28,6 +28,7 @@ struct UserBubbleStyleModifier: ViewModifier {
                 SpecificRoundedCorner(radius: 16, corners: [.topLeft, .topRight, .bottomLeft])
                     .foregroundColor(.primaryPurple)
             )
+            .bounceOnAppear()
     }
 }
 
