@@ -11,22 +11,6 @@ import SwiftUI
 final class AlertManager: ObservableObject{
     @Published var alert: AlertContent?
     
-//    enum AlertType {
-//        case goToSettings(title: String, message: String, primaryButtonText: String, onAction: () -> Void)
-//        case infoMessage(title: String, message: String, primaryButtonText: String, onAction: () -> Void)
-//    }
-//    
-//    func showAlert(for type: AlertType) {
-//        switch type {
-//        case .goToSettings(let title, let message, let primaryButtonText, let onAction):
-//            alert = AlertContent(title: title, message: message, primaryButtonText: primaryButtonText, primaryAction: onAction)
-//            
-//        case .infoMessage(let title, let message, let primaryButtonText, let onAction):
-//            alert = AlertContent(title: title, message: message, primaryButtonText: primaryButtonText, primaryAction: onAction)
-//            
-//        }
-//    }
-    
     enum AlertContentType {
         case emptyField
         case audioPermission
@@ -35,6 +19,8 @@ final class AlertManager: ObservableObject{
         case inProgress
         case promptRequestFailed(Error)
         case transcriptionFailed(Error)
+        case networkConnection
+        case requestFailed
     }
     
     func showAlertContent(type: AlertContentType) {
@@ -44,12 +30,12 @@ final class AlertManager: ObservableObject{
         case .audioPermission:
             alert = AlertContent(title: "Microphone Permission Required!", message: "Please go settings and enable microphone permission", primaryButtonText: "Go To Settings", primaryAction: { [weak self] in
                 guard let self else { return }
-                openSettings()
+                SettingsURLHandler.openAppSettings()
             })
         case .speechPermission:
             alert = AlertContent(title: "Speech Permission Required!", message: "Please go settings and enable speech recognition permission", primaryButtonText: "Go To Settings", primaryAction: { [weak self] in
                 guard let self else { return }
-                openSettings()
+                SettingsURLHandler.openAppSettings()
             })
             
         case .recordingFailed (let error):
@@ -63,12 +49,13 @@ final class AlertManager: ObservableObject{
             
         case .transcriptionFailed(let error):
             alert = AlertContent(title: "Transcription Failed", message: "Please try new recording. Error: \(error.localizedDescription)", primaryButtonText: "OK", primaryAction: {})
+            
+        case .networkConnection:
+            alert = AlertContent(title: "Network Connection", message: "Please check your network connection.", primaryButtonText: "OK", primaryAction: {})
+            
+        case .requestFailed:
+            alert = AlertContent(title: "Request Failed", message: "Asking question request failed", primaryButtonText: "OK", primaryAction: {})
         }
     }
     
-    func openSettings() {
-        if let url = URL(string: UIApplication.openSettingsURLString) {
-            UIApplication.shared.open(url)
-        }
-    }
 }
