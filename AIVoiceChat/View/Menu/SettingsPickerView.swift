@@ -28,8 +28,10 @@ struct SettingsPickerView: View {
                 ForEach(SettingsSelection.allCases, id: \.self) { item in
                     Button {
                         pickedSelection(item)
+                            
                     } label: {
                         Label(item.rawValue, systemImage: item.systemIconName)
+                            .accessibilityLabel(Text("Settings \(item.rawValue) choice"))
                     }
                 }
             }

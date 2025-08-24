@@ -8,38 +8,18 @@
 import Foundation
 import SwiftUI
 
-final class SettingsURLHandler {
-    private init() {}
-    static let shared = SettingsURLHandler()
+struct SettingsURLHandler {
     
-    typealias SettingsError = SettingsURLHandlerError
-    
-    func openAppSettings() throws {
+    static func openAppSettings() {
         
         guard let url = URL(string: UIApplication.openSettingsURLString) else {
-            throw SettingsError.noValidURL
+            return
         }
         
         guard UIApplication.shared.canOpenURL(url) else {
-            throw SettingsError.failedOpenURL
+           return
         }
         
         UIApplication.shared.open(url)
-    }
-}
-
-extension SettingsURLHandler {
-    enum SettingsURLHandlerError: Error, LocalizedError {
-        case noValidURL
-        case failedOpenURL
-        
-        var errorDescription: String? {
-            switch self {
-            case .noValidURL:
-                return "Settins URL can not be opened right now!"
-            case .failedOpenURL:
-                return "Failed to open settings! As manual, Please go Settings -> App -> Permissions and enable Microphone permission."
-            }
-        }
     }
 }
