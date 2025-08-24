@@ -14,6 +14,7 @@
 		0C0154DB2E5B2E6100E37C0B /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0154DA2E5B2E6100E37C0B /* Toast.swift */; };
 		0C0154DD2E5B31B200E37C0B /* ToastData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0154DC2E5B31B200E37C0B /* ToastData.swift */; };
 		0C0154DF2E5B438F00E37C0B /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0154DE2E5B438F00E37C0B /* ToastManager.swift */; };
+		0C0154EA2E5B59B900E37C0B /* MessageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0154E92E5B59B900E37C0B /* MessageCoordinator.swift */; };
 		0C433AE42E574E1600475090 /* Quicksand-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C433AE32E574E1600475090 /* Quicksand-SemiBold.ttf */; };
 		0C433AE52E574E1600475090 /* Quicksand-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C433AE12E574E1600475090 /* Quicksand-Medium.ttf */; };
 		0C433AE62E574E1600475090 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C433ADF2E574E1600475090 /* Quicksand-Bold.ttf */; };
@@ -74,6 +75,7 @@
 		0C0154DA2E5B2E6100E37C0B /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		0C0154DC2E5B31B200E37C0B /* ToastData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastData.swift; sourceTree = "<group>"; };
 		0C0154DE2E5B438F00E37C0B /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
+		0C0154E92E5B59B900E37C0B /* MessageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCoordinator.swift; sourceTree = "<group>"; };
 		0C433ADF2E574E1600475090 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.ttf"; sourceTree = "<group>"; };
 		0C433AE02E574E1600475090 /* Quicksand-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Light.ttf"; sourceTree = "<group>"; };
 		0C433AE12E574E1600475090 /* Quicksand-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Medium.ttf"; sourceTree = "<group>"; };
@@ -164,6 +166,14 @@
 				0C0154DA2E5B2E6100E37C0B /* Toast.swift */,
 			);
 			path = Animation;
+			sourceTree = "<group>";
+		};
+		0C0154E82E5B59B100E37C0B /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				0C0154E92E5B59B900E37C0B /* MessageCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		0C433ADC2E574DBB00475090 /* App */ = {
@@ -356,6 +366,7 @@
 		0CB5E1372E57477F00A25378 /* AIVoiceChat */ = {
 			isa = PBXGroup;
 			children = (
+				0C0154E82E5B59B100E37C0B /* Coordinator */,
 				0CCAA5942E5A4E2900A2945E /* Entity */,
 				0C6D32642E592ECC00A8BA50 /* ViewModel */,
 				0C933F832E579702000CF37C /* Helper */,
@@ -489,6 +500,7 @@
 				0C0154CF2E5B13B000E37C0B /* ToolbarView.swift in Sources */,
 				0C433AFA2E57674B00475090 /* PromptHorizontalListView.swift in Sources */,
 				0C6D324D2E58A0E200A8BA50 /* ChatGPTResponse.swift in Sources */,
+				0C0154EA2E5B59B900E37C0B /* MessageCoordinator.swift in Sources */,
 				0C6D32422E586DBC00A8BA50 /* RecordButton.swift in Sources */,
 				0C6D325B2E58ED0500A8BA50 /* SettingsPickerView.swift in Sources */,
 				0C933F8B2E57C63C000CF37C /* AlertManager.swift in Sources */,

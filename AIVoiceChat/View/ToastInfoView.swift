@@ -14,7 +14,6 @@ struct ToastInfoView: View {
     var body: some View {
         
         HStack{
-            
             Image(systemName: toast.systemImageName)
                 .foregroundColor(.white)
             Text(toast.message)

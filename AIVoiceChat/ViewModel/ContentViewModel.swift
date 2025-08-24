@@ -10,12 +10,13 @@ import SwiftUI
 import Combine
 
 class ContentViewModel: ObservableObject {
-    @Published var messages: [Message] = []
+//    @Published var messages: [Message] = []
     @Published var pickedLanguage = UserDefaultsManager.shared.speechCountry
     @Published var audioPermissionManager: AudioPermissionManager
     @Published var speechRecognitionManager: SpeechRecognitionManager
     @Published var contentState: ContentViewState = .readyToRecord
     
+    let messageCoordinator: MessageCoordinator
     private let networkManager: NetworkManager
     private let context = PersistanceController.shared.container.viewContext
     private let speechPermissionmanager: SpeechPermissionManager
@@ -26,27 +27,23 @@ class ContentViewModel: ObservableObject {
         alertManager: AlertManager = AlertManager(),
         audioPermissionManager: AudioPermissionManager? = nil,
         speechPermissionManager: SpeechPermissionManager? = nil,
-        speechRecognitionManager: SpeechRecognitionManager = SpeechRecognitionManager()
+        speechRecognitionManager: SpeechRecognitionManager = SpeechRecognitionManager(),
+        messageCoordinator: MessageCoordinator = MessageCoordinator()
     ) {
         self.networkManager = networkManager
         self.alertManager = alertManager
         self.audioPermissionManager = audioPermissionManager ?? AudioPermissionManager(alertManager: alertManager)
         self.speechPermissionmanager = speechPermissionManager ?? SpeechPermissionManager(alertManager: alertManager)
         self.speechRecognitionManager = speechRecognitionManager
+        self.messageCoordinator = messageCoordinator
         
-        loadCoreDataMessages()
-    }
-    
-    func loadCoreDataMessages() {
-        messages = CoreDataManager.shared.fetchMessages(context)
-        if messages.count == 0 { setFirstLoading() }
     }
     
     func sendChatGPTRequest(prompt: String) async throws {
         
         do {
             await MainActor.run {
-                setBubbleStatusActive(true)
+                messageCoordinator.setBubbleStatusActive(true)
             }
             let resultMessage = try await ChatGPTManager.shared.requestChatMessage(prompt)
             guard let resultText = resultMessage.resultText else {
@@ -58,11 +55,11 @@ class ContentViewModel: ObservableObject {
             UserDefaultsManager.shared.lastMessage = resultText
             
             await MainActor.run {
-                setBubbleStatusActive(false)
-                addMessage(Message(id: UUID(), sender: .ai, text: resultText))
+                messageCoordinator.setBubbleStatusActive(false)
+                messageCoordinator.addMessage(Message(id: UUID(), sender: .ai, text: resultText))
             }
         } catch {
-            setBubbleStatusActive(false)
+            messageCoordinator.setBubbleStatusActive(false)
             alertManager.showAlertContent(type: .requestFailed)
         }
        
@@ -83,31 +80,6 @@ class ContentViewModel: ObservableObject {
                 alertManager.showAlertContent(type: .promptRequestFailed(error))
             }
         }
-    }
-    
-    func setBubbleStatusActive(_ bool: Bool) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            
-            if bool {
-                messages.append(Message(id: UUID(), sender: .ai, text: "..."))
-            } else {
-                if messages.last?.text == "..." {
-                    messages.removeLast()
-                }
-            }
-        }
-    }
-    
-    private func addMessage(_ message: Message) {
-        messages.append(message)
-        CoreDataManager.shared.saveMessage(message, context: context)
-    }
-    
-    func setFirstLoading() {
-        addMessage(
-            Message(id: UUID(), sender: .ai, text: "Hello, how can I help you?")
-        )
     }
     
     func isPermissionsValid() -> Bool {
@@ -175,18 +147,18 @@ class ContentViewModel: ObservableObject {
         
         await MainActor.run {
             contentState = .loadingAfterRecord
-            addMessage(Message(id: UUID(), sender: .user, text: trimmed))
+            messageCoordinator.addMessage(Message(id: UUID(), sender: .user, text: trimmed))
         }
-        setBubbleStatusActive(true)
+        messageCoordinator.setBubbleStatusActive(true)
         
         do {
             let resultMessage = try await ChatGPTManager.shared.requestChatMessage(trimmed)
             let resultText = resultMessage.resultText ?? "…"
-            setBubbleStatusActive(false)
+            messageCoordinator.setBubbleStatusActive(false)
             
-            await MainActor.run { addMessage(Message(id: UUID(), sender: .ai, text: resultText)) }
+            await MainActor.run { messageCoordinator.addMessage(Message(id: UUID(), sender: .ai, text: resultText)) }
         } catch {
-            setBubbleStatusActive(false)
+            messageCoordinator.setBubbleStatusActive(false)
             await MainActor.run { contentState = .readyToRecord }
             throw ChatGPTManager.ChatGPTError.requestFailed
         }

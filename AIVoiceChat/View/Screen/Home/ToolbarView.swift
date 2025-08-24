@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ToolbarView: View {
     
+    // todo delete inject
     @Binding var pickedLanguage: Country
     var onSettingsSelected: (SettingsMenuData) -> Void
     
@@ -27,7 +28,6 @@ struct ToolbarView: View {
             }
             .padding(.trailing, 12)
             .accessibilityLabel("Settings Menu Button")
-            
             
         }.padding(.leading)
     }

@@ -13,7 +13,7 @@ struct PromptHorizontalListView: View {
     
     var body: some View {
         ScrollView (.horizontal) {
-            HStack {
+            LazyHStack {
                 ForEach(PromptData.prompts, id: \.self) { item in
                     PromptCellView(prompt: item)
                         

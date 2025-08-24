@@ -9,7 +9,7 @@ import SwiftUI
 
 //TODO: Make this work for speech recognition
 struct LanguagePickerView: View {
-    
+    //todo
     @Binding var picked: Country
     
     var body: some View {

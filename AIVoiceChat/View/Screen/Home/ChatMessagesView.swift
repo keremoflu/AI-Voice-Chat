@@ -9,13 +9,13 @@ import SwiftUI
 
 struct ChatMessagesView: View {
     
-    @StateObject var chatVM: ContentViewModel
+    @StateObject var messagesCoordinator: MessageCoordinator
     
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 8) {
-                    ForEach(chatVM.messages, id: \.self) { message in
+                    ForEach(messagesCoordinator.messages, id: \.self) { message in
                         HStack {
                             if message.sender == .ai {
                                 AIBubbleView(text: message.text)
@@ -31,7 +31,7 @@ struct ChatMessagesView: View {
             .onAppear {
                 scrollToBottom(proxy: proxy)
             }
-            .onChange(of: chatVM.messages.count) { _ in
+            .onChange(of: messagesCoordinator.messages.count) { _ in
                 scrollToBottom(proxy: proxy)
             }
 
@@ -39,7 +39,7 @@ struct ChatMessagesView: View {
     }
     
     private func scrollToBottom(proxy: ScrollViewProxy) {
-        guard let lastMessage = chatVM.messages.last else { return }
+        guard let lastMessage = messagesCoordinator.messages.last else { return }
         
         DispatchQueue.main.async {
             withAnimation(.easeOut(duration: 0.3)) {
@@ -51,5 +51,5 @@ struct ChatMessagesView: View {
 
 
 #Preview {
-    ChatMessagesView(chatVM: ContentViewModel(networkManager: NetworkManager()))
+    ChatMessagesView(messagesCoordinator: MessageCoordinator())
 }

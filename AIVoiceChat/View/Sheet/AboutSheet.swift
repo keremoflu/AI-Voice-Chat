@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AboutSheet: View {
+    //model missing todo
     var body: some View {
         VStack (spacing: 32) {
             Image("info.circle.fill")

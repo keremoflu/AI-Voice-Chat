@@ -26,7 +26,6 @@ struct RecordButton: View {
                 LoadingRecordButton()
             }
         }.accessibilityLabel("Audio Record Button")
-        
     }
 }
 
@@ -36,6 +35,7 @@ struct LoadingRecordButton: View {
     var body: some View {
         
         Image(systemName: "progress.indicator")
+        //todo modifier
             .font(.title)
             .foregroundColor(.white)
             .padding(32)
@@ -52,7 +52,6 @@ struct LoadingRecordButton: View {
                     isAnimating = true
                 }
             }
-        
     }
 }
 
@@ -71,7 +70,6 @@ struct IdleRecordButton: View {
                         Circle().foregroundColor(.primaryPurple).opacity(0.16)
                     )
             )
-        
     }
 }
 

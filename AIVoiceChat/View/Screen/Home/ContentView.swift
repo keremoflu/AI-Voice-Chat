@@ -14,8 +14,6 @@ struct ContentView: View {
     @StateObject private var alertManager = AlertManager()
     @StateObject private var toastManager = ToastManager()
     
-    
-    @State var isAboutSheetVisible = false
     @State var pickedLanguage = UserDefaultsManager.shared.speechCountry
     @State var activeSettingsSheet: SettingsMenuData? = nil
   
@@ -41,7 +39,7 @@ struct ContentView: View {
                 }
                 
                 //CHAT BUBBLE
-                ChatMessagesView(chatVM: chatVM)
+                ChatMessagesView(messagesCoordinator: chatVM.messageCoordinator)
                 
                 //RECORD
                 RecordButton (contentState: $chatVM.contentState) {
@@ -66,7 +64,6 @@ struct ContentView: View {
                     .transition(.move(edge: .top).combined(with: .opacity))
                     .zIndex(1)
             }
-            
 
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -91,9 +88,7 @@ struct ContentView: View {
                 toastManager.showToast(ToastData.networkFailed.toast, duration: 3.0)
             }
         }
-        
     }
-    
 }
 
 
