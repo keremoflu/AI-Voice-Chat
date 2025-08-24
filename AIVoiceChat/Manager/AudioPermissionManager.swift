@@ -19,10 +19,10 @@ final class AudioPermissionManager: ObservableObject {
     
     func startRequest(responseState: @escaping (Result<AVAudioSession.RecordPermission, AudioPermissionError>) -> Void) {
         
-        let status = getPermissionStatus()
-        permissonStatus = status
+        let session = AVAudioSession.sharedInstance()
+        let systemStatus = session.recordPermission
         
-        switch permissonStatus {
+        switch systemStatus {
         case .undetermined:
             requestRecordPermission { [weak self] isGranted in
                 guard let self else {
@@ -37,7 +37,7 @@ final class AudioPermissionManager: ObservableObject {
                 
             }
         default:
-            handlePermissionStatus(status, responseState: responseState)
+            handlePermissionStatus(systemStatus, responseState: responseState)
         }
     }
     
@@ -46,14 +46,13 @@ final class AudioPermissionManager: ObservableObject {
         case .undetermined:
             responseState(.failure(.unknown))
         case .denied:
-            alertManager.showAlert(for: .goToSettings(title: "Microphone Permission Required.", message: "Please go to settings and enable microphone permission", primaryButtonText: "Go Settings", onAction: {
-                do {
-                    try SettingsURLHandler.shared.openAppSettings()
-                    responseState(.failure(.disabled))
-                } catch {
-                    responseState(.failure(.failedOpenSettings))
-                }
-            }))
+            alertManager.showAlert(for: .goToSettings(title: "Microphone Permission Required.", message: "Please go to settings and enable microphone permission", primaryButtonText: "Go Settings",
+            onAction: {
+                    do { try SettingsURLHandler.shared.openAppSettings() } catch {
+                    
+                    }
+               }
+            ))
             responseState(.failure(.disabled))
         case .granted:
             responseState(.success(.granted))

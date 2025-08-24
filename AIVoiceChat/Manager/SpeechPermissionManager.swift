@@ -19,36 +19,45 @@ final class SpeechPermissionManager: ObservableObject {
         self.permissionStatus = SFSpeechRecognizer.authorizationStatus()
     }
     
+    var currentStatus: SpeechStatus { SFSpeechRecognizer.authorizationStatus() }
+    
     func startRequest(responseState: @escaping (Result<SpeechStatus, SpeechPermissionError>) -> Void) {
-        switch permissionStatus {
-        case .notDetermined:
-            requestSpeechPermission { [weak self] status in
+        let status = currentStatus
+        if status == .notDetermined {
+            requestSpeechPermission { [weak self] newStatus in
                 guard let self else {
                     responseState(.failure(.unknown))
                     return
                 }
-                self.handlePermissionStatus(status, responseState: responseState)
+                self.permissionStatus = newStatus
+                self.handlePermissionStatus(newStatus, responseState: responseState)
             }
-        default:
-            handlePermissionStatus(permissionStatus, responseState: responseState)
+        } else {
+            permissionStatus = status
+            handlePermissionStatus(status, responseState: responseState)
         }
     }
     
     func handlePermissionStatus(_ status: SpeechStatus, responseState: @escaping (Result<SpeechStatus, SpeechPermissionError>) -> Void) {
-        switch permissionStatus {
+        switch status {
         case .notDetermined:
             responseState(.failure(.unknown))
         case .authorized:
             responseState(.success(.authorized))
         case .denied:
-            alertManager.showAlert(for: .goToSettings(title: "Speech Recognition Permission Required", message: "Please go to settings and enable speech recognition permission", primaryButtonText: "Go To Settings", onAction: {
-                do {
-                    try SettingsURLHandler.shared.openAppSettings()
-                    responseState(.failure(.denied))
-                } catch {
-                    responseState(.failure(.failedOpenSettings))
+            alertManager.showAlert(for: .goToSettings(
+                title: "Speech Recognition Permission Required",
+                message: "Please go to settings and enable speech recognition permission",
+                primaryButtonText: "Go To Settings",
+                onAction: {
+                    do {
+                        try SettingsURLHandler.shared.openAppSettings()
+                    } catch {
+                        
+                    }
                 }
-            }))
+            ))
+            responseState(.failure(.denied))
         case .restricted:
             responseState(.failure(.restricted))
         @unknown default:
