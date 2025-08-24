@@ -28,3 +28,9 @@ Engage in real-time voice conversations with an intelligent AI assistant, right 
 * Speech Recognition Permission (Voice Transcribe)
 * OpenAI API Key
 
+## Assumptions and Trade-Offs
+* App uses native Speech Recognition with no cost but only supports 15 languages.
+* AI responses powered by OpenAI. Fast and stable but it requires additional cost.
+* No backend used for authentication, less latency but less user data security.
+* Voice over is supported for accessibility but it requires more test process.
+* Offline storage supported but it can't be moved to a new device.
