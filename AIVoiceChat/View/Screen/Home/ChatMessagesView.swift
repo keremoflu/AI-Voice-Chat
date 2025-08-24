@@ -29,26 +29,27 @@ struct ChatMessagesView: View {
                 }.padding()
             }
             .onAppear {
-                if let last = chatVM.messages.last {
-                    withAnimation {
-                        proxy.scrollTo(last.id, anchor: .bottom)
-                    }
-                }
+                scrollToBottom(proxy: proxy)
             }
             .onChange(of: chatVM.messages.count) { _ in
-                guard let last = chatVM.messages.last else { return }
-                DispatchQueue.main.async {
-                    withAnimation(.easeOut(duration: 0.25)) {
-                        proxy.scrollTo(last.id, anchor: .bottom)
-                    }
-                }
+                scrollToBottom(proxy: proxy)
             }
 
+        }
+    }
+    
+    private func scrollToBottom(proxy: ScrollViewProxy) {
+        guard let lastMessage = chatVM.messages.last else { return }
+        
+        DispatchQueue.main.async {
+            withAnimation(.easeOut(duration: 0.3)) {
+                proxy.scrollTo(lastMessage.id, anchor: .bottom)
+            }
         }
     }
 }
 
 
 #Preview {
-    ChatMessagesView(chatVM: ContentViewModel())
+    ChatMessagesView(chatVM: ContentViewModel(networkManager: NetworkManager()))
 }
