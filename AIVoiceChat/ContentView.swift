@@ -47,12 +47,8 @@ struct ContentView: View {
                 
                 //PROMPTS LIST
                 PromptView(didPromptSelected: { prompt in
-                    chatVM.messages.append(
-                        Message(
-                            id: UUID(),
-                            sender: .user,
-                            text: prompt.text))
-                    Task { try await chatVM.sendChatGPTRequest(prompt: prompt.text) }
+                    
+                   
                 })
             }
             
@@ -79,6 +75,17 @@ struct ContentView: View {
             sheetView(for: selection)
         }
         
+    }
+    
+    func sendPromptRequest(prompt: Prompt) {
+        Task {
+            do {
+                try await chatVM.send(text: prompt.text)
+                
+            } catch (let error) {
+                alertManager.showAlert(for: .infoMessage(title: "Network Error", message: "We're failed sending prompt to server. Error: \(error.localizedDescription)", primaryButtonText: "OK", onAction: {}))
+            }
+        }
     }
 }
 
@@ -148,12 +155,14 @@ private struct ChatMessagesView: View {
                 }
             }
             .onChange(of: chatVM.messages.count) { _ in
-                if let last = chatVM.messages.last {
-                    withAnimation {
-                        proxy.scrollTo(last.id, anchor: .top)
+                guard let last = chatVM.messages.last else { return }
+                DispatchQueue.main.async {
+                    withAnimation(.easeOut(duration: 0.25)) {
+                        proxy.scrollTo(last.id, anchor: .bottom)
                     }
                 }
             }
+
         }
     }
 }

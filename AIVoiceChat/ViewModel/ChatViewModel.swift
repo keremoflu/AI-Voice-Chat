@@ -19,7 +19,7 @@ class ChatViewModel: ObservableObject {
     private let context = PersistanceController.shared.container.viewContext
     private let speechPermissionmanager: SpeechPermissionManager
     let alertManager: AlertManager
-
+    
     init(
         alertManager: AlertManager = AlertManager(),
         audioPermissionManager: AudioPermissionManager? = nil,
@@ -37,46 +37,6 @@ class ChatViewModel: ObservableObject {
     func loadCoreDataMessages() {
         messages = CoreDataManager.shared.fetchMessages(context)
         if messages.count == 0 { setFirstLoading() }
-    }
-    
-    func recordingButtonTapped() {
-        
-        guard isPermissionsValid() else {
-            requestAllPermissions()
-            return
-        }
-        
-        switch contentState {
-        case .readyToRecord:
-            do {
-                print("record started")
-                contentState = .recording
-                try speechRecognitionManager.startSpeechRecognition()
-            } catch {
-                print("speech error")
-                contentState = .readyToRecord
-            }
-            
-            
-        case .recording:
-            contentState = .loadingAfterRecord
-            speechRecognitionManager.stopSpeechRecognition { [weak self] transcript in
-                guard let self else { return }
-                print("TRANSKRIPT: \(transcript)")
-                addMessage(Message(id: UUID(), sender: .user, text: transcript))
-                
-                //Forward to ChatGPT
-                Task { [weak self] in
-                    guard let self else { return }
-                    try await sendChatGPTRequest(prompt: transcript)
-                    await MainActor.run {
-                        self.contentState = .readyToRecord
-                    }
-                }
-            }
-        case .loadingAfterRecord:
-            print("loadingAfterRecord case")
-        }
     }
     
     func sendChatGPTRequest(prompt: String) async throws {
@@ -104,11 +64,15 @@ class ChatViewModel: ObservableObject {
     }
     
     func setBubbleStatusActive(_ bool: Bool) {
-        if bool {
-            messages.append(Message(id: UUID(), sender: .ai, text: "..."))
-        } else {
-            if messages.last?.text == "..." {
-                messages.removeLast()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            if bool {
+                messages.append(Message(id: UUID(), sender: .ai, text: "..."))
+            } else {
+                if messages.last?.text == "..." {
+                    messages.removeLast()
+                }
             }
         }
     }
@@ -156,6 +120,7 @@ class ChatViewModel: ObservableObject {
                     switch result {
                     case .success:
                         self?.requestSpeechRecognitionPermission()
+                        
                     case .failure:
                         self?.alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
                             self?.openSettings()
@@ -168,33 +133,37 @@ class ChatViewModel: ObservableObject {
             requestSpeechRecognitionPermission()
         }
     }
-    
-       
-       private func showPermissionAlert(type: String, message: String) {
-           print("🔔 Showing alert for \(type)")
-           alertManager.showAlert(for: .goToSettings(
-               title: "\(type) Permission Required",
-               message: message,
-               primaryButtonText: "Go To Settings",
-               onAction: { [weak self] in
-                   print("🔧 Opening settings...")
-                   self?.openSettings()
-               }
-           ))
-       }
-    
     private func requestSpeechRecognitionPermission() {
         speechPermissionmanager.startRequest { [weak self] result in
             switch result {
             case .success:
-                print("Speech recognition permission granted.")
-            case .failure:
-                self?.alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
-                    self?.openSettings()
-                }))
+                print("requestSpeechRecognitionPermission, speechpermission success.")
+            case .failure(let err):
+                if case .restricted = err {
+                    self?.alertManager.showAlert(for: .infoMessage(
+                        title: "Speech Permission Required",
+                        message: "Speech Recognition is restricted on this device. Please enable it.",
+                        primaryButtonText: "OK",
+                        onAction: {}
+                    ))
+                }
+                
             }
         }
     }
+    
+//    private func requestSpeechRecognitionPermission() {
+//        speechPermissionmanager.startRequest { [weak self] result in
+//            switch result {
+//            case .success:
+//                print("Speech recognition permission granted.")
+//            case .failure:
+//                self?.alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
+//                    self?.openSettings()
+//                }))
+//            }
+//        }
+//    }
     
     func requestPermissions() {
         audioPermissionManager.startRequest { [weak self] result in
@@ -207,6 +176,64 @@ class ChatViewModel: ObservableObject {
                 print("")
                 //TODO: Error Here
             }
+        }
+    }
+    
+    func send(text: String) async throws {
+        //TODO: Add error
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            contentState = .readyToRecord
+            return
+        }
+        
+        await MainActor.run {
+            contentState = .loadingAfterRecord
+            addMessage(Message(id: UUID(), sender: .user, text: trimmed))
+        }
+        setBubbleStatusActive(true)
+        
+        do {
+            let resultMessage = try await ChatGPTManager.shared.requestChatMessage(trimmed)
+            let resultText = resultMessage.resultText ?? "…"
+            setBubbleStatusActive(false)
+            await MainActor.run {
+                addMessage(Message(id: UUID(), sender: .ai, text: resultText))
+            }
+        } catch {
+            setBubbleStatusActive(false)
+            addMessage(Message(id: UUID(), sender: .ai, text: "Response Failed, please try again later."))
+        }
+        
+        await MainActor.run {
+            contentState = .readyToRecord
+        }
+    }
+    
+    func recordingButtonTapped() {
+        guard isPermissionsValid() else {
+            requestAllPermissions()
+            return
+        }
+        
+        switch contentState {
+        case .readyToRecord:
+            do {
+                contentState = .recording
+                try speechRecognitionManager.startSpeechRecognition()
+            } catch {
+                contentState = .readyToRecord
+            }
+            
+        case .recording:
+            contentState = .loadingAfterRecord
+            speechRecognitionManager.stopSpeechRecognition { [weak self] transcript in
+                guard let self else { return }
+                Task { try await self.send(text: transcript) }
+            }
+            
+        case .loadingAfterRecord:
+            break
         }
     }
     
