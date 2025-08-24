@@ -9,13 +9,11 @@ import SwiftUI
 
 struct ToolbarView: View {
     
-    // todo delete inject
-    @Binding var pickedLanguage: Country
     var onSettingsSelected: (SettingsMenuData) -> Void
     
     var body: some View {
         HStack {
-            LanguagePickerView(picked: $pickedLanguage)
+            LanguagePickerView()
                 .accessibilityLabel("Language Button")
                 
             Spacer()
@@ -34,7 +32,7 @@ struct ToolbarView: View {
 }
 
 #Preview {
-    ToolbarView(pickedLanguage: .constant(.init(name: "", flag: "", code: ""))) { _ in
+    ToolbarView() { _ in
         
     }
 }

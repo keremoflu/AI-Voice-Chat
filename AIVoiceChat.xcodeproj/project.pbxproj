@@ -54,6 +54,7 @@
 		0C933F902E57CFB6000CF37C /* UserBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F8F2E57CFB6000CF37C /* UserBubbleView.swift */; };
 		0C933F952E57D289000CF37C /* SpecificRoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F942E57D289000CF37C /* SpecificRoundedCorner.swift */; };
 		0C933F972E57D514000CF37C /* AIBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F962E57D514000CF37C /* AIBubbleView.swift */; };
+		0CA4C8F62E5B8C7600ABF790 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA4C8F52E5B8C7600ABF790 /* SplashView.swift */; };
 		0CB5E1382E57477F00A25378 /* AIVoiceChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB5E1342E57477F00A25378 /* AIVoiceChatApp.swift */; };
 		0CB5E1392E57477F00A25378 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB5E1362E57477F00A25378 /* ContentView.swift */; };
 		0CB5E13A2E57477F00A25378 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CB5E1352E57477F00A25378 /* Assets.xcassets */; };
@@ -116,6 +117,7 @@
 		0C933F8F2E57CFB6000CF37C /* UserBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBubbleView.swift; sourceTree = "<group>"; };
 		0C933F942E57D289000CF37C /* SpecificRoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificRoundedCorner.swift; sourceTree = "<group>"; };
 		0C933F962E57D514000CF37C /* AIBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIBubbleView.swift; sourceTree = "<group>"; };
+		0CA4C8F52E5B8C7600ABF790 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		0CB5E1262E57477300A25378 /* AIVoiceChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIVoiceChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB5E1342E57477F00A25378 /* AIVoiceChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIVoiceChatApp.swift; sourceTree = "<group>"; };
 		0CB5E1352E57477F00A25378 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 		0C0154CC2E5B138900E37C0B /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				0CA4C8F42E5B8C6C00ABF790 /* Splash */,
 				0C0154CD2E5B139000E37C0B /* Home */,
 			);
 			path = Screen;
@@ -347,6 +350,14 @@
 			path = Shape;
 			sourceTree = "<group>";
 		};
+		0CA4C8F42E5B8C6C00ABF790 /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				0CA4C8F52E5B8C7600ABF790 /* SplashView.swift */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
 		0CB5E11D2E57477300A25378 = {
 			isa = PBXGroup;
 			children = (
@@ -497,6 +508,7 @@
 				0CEE873D2E599BE2004524B1 /* SpeechPermissionManager.swift in Sources */,
 				0C6D324B2E58A02300A8BA50 /* ChatGPTManager.swift in Sources */,
 				0CEE87452E59E5C7004524B1 /* Extension+ChatGPTResponse.swift in Sources */,
+				0CA4C8F62E5B8C7600ABF790 /* SplashView.swift in Sources */,
 				0C0154CF2E5B13B000E37C0B /* ToolbarView.swift in Sources */,
 				0C433AFA2E57674B00475090 /* PromptHorizontalListView.swift in Sources */,
 				0C6D324D2E58A0E200A8BA50 /* ChatGPTResponse.swift in Sources */,
@@ -666,6 +678,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIVoiceChat/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "AI Chat";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need this permission to convert your voice into chat requests.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need this permission to transcribe your speech into text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -702,6 +716,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIVoiceChat/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "AI Chat";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need this permission to convert your voice into chat requests.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need this permission to transcribe your speech into text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

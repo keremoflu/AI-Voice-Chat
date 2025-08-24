@@ -14,7 +14,6 @@ struct AIBubbleView: View {
     var body: some View {
         Text(text)
             .modifier(AIBubbleStyleModifier())
-       
     }
 }
 

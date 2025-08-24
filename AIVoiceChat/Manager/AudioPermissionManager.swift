@@ -55,7 +55,6 @@ final class AudioPermissionManager: ObservableObject {
         }
     }
     
-    
     func getPermissionStatus () -> AVAudioSession.RecordPermission {
         return AVAudioSession.sharedInstance().recordPermission
     }

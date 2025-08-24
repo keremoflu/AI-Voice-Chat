@@ -13,11 +13,10 @@ struct BounceOnAppear: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .scaleEffect(scale)
-            .onAppear {
-                withAnimation(.spring(response: 0.25, dampingFraction: 0.6)) { scale = 1.08 }
-                withAnimation(.spring(response: 0.25, dampingFraction: 0.9).delay(0.125)) { scale = 1.00 }
-
-            }
+        .scaleEffect(scale)
+        .onAppear {
+            withAnimation(.spring(response: 0.25, dampingFraction: 0.6)) { scale = 1.08 }
+            withAnimation(.spring(response: 0.25, dampingFraction: 0.9).delay(0.125)) { scale = 1.00 }
+       }
     }
 }

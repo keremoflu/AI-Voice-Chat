@@ -11,7 +11,6 @@ import Speech
 final class SpeechPermissionManager: ObservableObject {
     @Published var permissionStatus: SFSpeechRecognizerAuthorizationStatus
     private let alertManager: AlertManager
-    
     typealias SpeechStatus = SFSpeechRecognizerAuthorizationStatus
     
     init(alertManager: AlertManager) {

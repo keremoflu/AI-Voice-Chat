@@ -91,7 +91,6 @@ final class ChatGPTManager: Request {
             throw ChatGPTError.requestFailed
         }
     }
-    
 }
 
 extension ChatGPTManager {

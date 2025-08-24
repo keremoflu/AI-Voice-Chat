@@ -8,21 +8,23 @@
 import SwiftUI
 
 struct AboutSheet: View {
-    //model missing todo
+    
+    var settingsMenuData: SettingsMenuData
+    
     var body: some View {
         VStack (spacing: 32) {
-            Image("info.circle.fill")
+            Image(settingsMenuData.systemImageName)
                 .font(.system(size: 32))
             
-            Text("About")
+            Text(settingsMenuData.title)
                 .font(.quickSand(size: 24, name: .medium))
             
-            Text("AI Voice Chat App created by Kerem Oflu")
+            Text(settingsMenuData.contentString)
                 .font(.quickSand(size: 16, name: .regular))
         }
     }
 }
 
 #Preview {
-    AboutSheet()
+    AboutSheet(settingsMenuData: .about)
 }

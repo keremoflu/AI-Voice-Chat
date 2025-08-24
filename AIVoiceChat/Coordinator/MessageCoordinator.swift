@@ -28,11 +28,11 @@ class MessageCoordinator: ObservableObject {
     }
     
     func addMessage(_ message: Message) {
-        messages.append(message)
         CoreDataManager.shared.saveMessage(message, context: context)
+        messages.append(message)
     }
     
-    func setBubbleStatusActive(_ isActive: Bool) {
+    func setBubbleStatus(_ isActive: Bool) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             isActive ? messages.append(thinkMessage) : messages.removeAll { $0 == self.thinkMessage }

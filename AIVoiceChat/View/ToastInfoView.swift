@@ -20,7 +20,7 @@ struct ToastInfoView: View {
                 .font(.quickSand(size: 16, name: .bold))
                 .foregroundColor(.white)
                 .padding()
-        }
+            }
             .frame(maxWidth: .infinity, minHeight: 60)
             .background(
                 RoundedRectangle(cornerRadius: 16)

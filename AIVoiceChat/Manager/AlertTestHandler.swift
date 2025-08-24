@@ -19,7 +19,6 @@ class AlertTestHandler: ObservableObject {
         switch type {
         case .goToSettings(let title, let message, let primaryButtonText, let onAction):
             currentAlert = AlertContent(title: title, message: message, primaryButtonText: primaryButtonText, primaryAction: onAction)
-            
         }
     }
 }

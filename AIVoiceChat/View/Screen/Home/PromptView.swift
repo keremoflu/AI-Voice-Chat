@@ -21,7 +21,6 @@ struct PromptView: View {
                 didPromptSelected(selectedPrompt)
             }
         }
-        
     }
 }
 

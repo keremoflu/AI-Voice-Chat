@@ -29,16 +29,23 @@ struct RecordButton: View {
     }
 }
 
-struct LoadingRecordButton: View {
+struct RecordButtonModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.title)
+            .foregroundColor(.white)
+            .padding(32)
+        
+    }
+}
+
+private struct LoadingRecordButton: View {
     @State private var isAnimating = false
     
     var body: some View {
         
         Image(systemName: "progress.indicator")
-        //todo modifier
-            .font(.title)
-            .foregroundColor(.white)
-            .padding(32)
+            .modifier(RecordButtonModifier())
             .background(
                 Circle()
                     .foregroundColor(.grayPrimary)
@@ -55,13 +62,11 @@ struct LoadingRecordButton: View {
     }
 }
 
-struct IdleRecordButton: View {
+private struct IdleRecordButton: View {
     var body: some View {
         
         Image(systemName: "microphone.fill")
-            .font(.title)
-            .foregroundColor(.white)
-            .padding(32)
+            .modifier(RecordButtonModifier())
             .background(
                 Circle()
                     .foregroundColor(.primaryPurple)
@@ -73,15 +78,13 @@ struct IdleRecordButton: View {
     }
 }
 
-struct RecordingButton: View {
+private struct RecordingButton: View {
     
     @State private var pulse = false
     
     var body: some View {
         Image(systemName: "stop.fill")
-            .font(.title)
-            .foregroundColor(.white)
-            .padding(32)
+            .modifier(RecordButtonModifier())
             .background(
                 Circle()
                     .foregroundColor(.primaryRed)

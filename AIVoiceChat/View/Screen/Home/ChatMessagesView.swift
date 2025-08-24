@@ -15,7 +15,7 @@ struct ChatMessagesView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 8) {
-                    ForEach(messagesCoordinator.messages, id: \.self) { message in
+                    ForEach(messagesCoordinator.messages, id: \.id) { message in
                         HStack {
                             if message.sender == .ai {
                                 AIBubbleView(text: message.text)
@@ -31,7 +31,7 @@ struct ChatMessagesView: View {
             .onAppear {
                 scrollToBottom(proxy: proxy)
             }
-            .onChange(of: messagesCoordinator.messages.count) { _ in
+            .onChange(of: messagesCoordinator.messages.last?.text) { _ in
                 scrollToBottom(proxy: proxy)
             }
 
@@ -41,14 +41,13 @@ struct ChatMessagesView: View {
     private func scrollToBottom(proxy: ScrollViewProxy) {
         guard let lastMessage = messagesCoordinator.messages.last else { return }
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             withAnimation(.easeOut(duration: 0.3)) {
                 proxy.scrollTo(lastMessage.id, anchor: .bottom)
             }
         }
     }
 }
-
 
 #Preview {
     ChatMessagesView(messagesCoordinator: MessageCoordinator())

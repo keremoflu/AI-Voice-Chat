@@ -18,8 +18,6 @@ final class CoreDataManager {
         object.text = message.text
         object.createdAt = Date()
         
-        print("CoreData: saveMessage: object: \(message)")
-        
         do {
             try context.save()
         } catch {
@@ -42,18 +40,6 @@ final class CoreDataManager {
                 text: $0.text ?? ""
             )
         }
-        
-        print("CoreData: fetchMessages: results: \(finalResult)")
-        
         return finalResult
-    }
-    
-    func deleteMessage(_ entity: AIChatEntity, context: NSManagedObjectContext) {
-        context.delete(entity)
-        do {
-            try context.save()
-        } catch {
-            print("CoreDataManager - deleteMessage Error")
-        }
     }
 }

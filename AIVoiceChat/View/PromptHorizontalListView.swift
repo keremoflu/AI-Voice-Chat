@@ -13,10 +13,9 @@ struct PromptHorizontalListView: View {
     
     var body: some View {
         ScrollView (.horizontal) {
-            LazyHStack {
+            HStack {
                 ForEach(PromptData.prompts, id: \.self) { item in
                     PromptCellView(prompt: item)
-                        
                         .onTapGesture {
                             isPromptSelected(item)
                         }
@@ -27,7 +26,6 @@ struct PromptHorizontalListView: View {
 }
 
 private struct PromptCellView: View {
-    
     var prompt: Prompt
     
     var body: some View {

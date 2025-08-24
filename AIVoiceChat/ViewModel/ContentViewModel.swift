@@ -10,7 +10,6 @@ import SwiftUI
 import Combine
 
 class ContentViewModel: ObservableObject {
-//    @Published var messages: [Message] = []
     @Published var pickedLanguage = UserDefaultsManager.shared.speechCountry
     @Published var audioPermissionManager: AudioPermissionManager
     @Published var speechRecognitionManager: SpeechRecognitionManager
@@ -43,7 +42,7 @@ class ContentViewModel: ObservableObject {
         
         do {
             await MainActor.run {
-                messageCoordinator.setBubbleStatusActive(true)
+                messageCoordinator.setBubbleStatus(true)
             }
             let resultMessage = try await ChatGPTManager.shared.requestChatMessage(prompt)
             guard let resultText = resultMessage.resultText else {
@@ -55,14 +54,13 @@ class ContentViewModel: ObservableObject {
             UserDefaultsManager.shared.lastMessage = resultText
             
             await MainActor.run {
-                messageCoordinator.setBubbleStatusActive(false)
+                messageCoordinator.setBubbleStatus(false)
                 messageCoordinator.addMessage(Message(id: UUID(), sender: .ai, text: resultText))
             }
         } catch {
-            messageCoordinator.setBubbleStatusActive(false)
+            messageCoordinator.setBubbleStatus(false)
             alertManager.showAlertContent(type: .requestFailed)
         }
-       
     }
     
     func sendPromptRequest(prompt: Prompt) {
@@ -77,7 +75,10 @@ class ContentViewModel: ObservableObject {
                 try await sendChatRequest(text: prompt.text)
                 
             } catch (let error) {
-                alertManager.showAlertContent(type: .promptRequestFailed(error))
+                await MainActor.run {
+                    alertManager.showAlertContent(type: .promptRequestFailed(error))
+                }
+                
             }
         }
     }
@@ -121,6 +122,7 @@ class ContentViewModel: ObservableObject {
             requestSpeechRecognitionPermission()
         }
     }
+    
     private func requestSpeechRecognitionPermission() {
         speechPermissionmanager.startRequest { [weak self] result in
             switch result {
@@ -136,7 +138,6 @@ class ContentViewModel: ObservableObject {
     }
     
     func sendChatRequest(text: String) async throws {
-        //TODO: Add error
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard !trimmed.isEmpty else {
@@ -149,16 +150,16 @@ class ContentViewModel: ObservableObject {
             contentState = .loadingAfterRecord
             messageCoordinator.addMessage(Message(id: UUID(), sender: .user, text: trimmed))
         }
-        messageCoordinator.setBubbleStatusActive(true)
+        messageCoordinator.setBubbleStatus(true)
         
         do {
             let resultMessage = try await ChatGPTManager.shared.requestChatMessage(trimmed)
             let resultText = resultMessage.resultText ?? "…"
-            messageCoordinator.setBubbleStatusActive(false)
+            messageCoordinator.setBubbleStatus(false)
             
             await MainActor.run { messageCoordinator.addMessage(Message(id: UUID(), sender: .ai, text: resultText)) }
         } catch {
-            messageCoordinator.setBubbleStatusActive(false)
+            messageCoordinator.setBubbleStatus(false)
             await MainActor.run { contentState = .readyToRecord }
             throw ChatGPTManager.ChatGPTError.requestFailed
         }
@@ -225,40 +226,6 @@ class ContentViewModel: ObservableObject {
                     }
                 }
             }
-        }
-    }
-
-    
-//    func recordingButtonTapped() {
-//        guard isPermissionsValid() else {
-//            requestAllPermissions()
-//            return
-//        }
-//        
-//        switch contentState {
-//        case .readyToRecord:
-//            do {
-//                contentState = .recording
-//                try speechRecognitionManager.startSpeechRecognition()
-//            } catch {
-//                contentState = .readyToRecord
-//            }
-//            
-//        case .recording:
-//            contentState = .loadingAfterRecord
-//            speechRecognitionManager.stopSpeechRecognition { [weak self] transcript in
-//                guard let self else { return }
-//                Task { try await self.send(text: transcript) }
-//            }
-//            
-//        case .loadingAfterRecord:
-//            break
-//        }
-//    }
-    
-    func openSettings() {
-        if let url = URL(string: UIApplication.openSettingsURLString) {
-            UIApplication.shared.open(url)
         }
     }
 }

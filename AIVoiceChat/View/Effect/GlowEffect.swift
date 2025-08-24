@@ -19,7 +19,6 @@ struct GlowEffect: View {
             Color.clear
                 .ignoresSafeArea()
 
-            // Glow overlay
             RoundedRectangle(cornerRadius: 40)
                 .strokeBorder(
                     AngularGradient(
@@ -46,10 +45,8 @@ struct GlowEffect: View {
         .onAppear {
             isGrowing = true
         }
-        
     }
 }
-
 
 #Preview {
     GlowEffect()

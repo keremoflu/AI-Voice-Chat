@@ -28,13 +28,11 @@ final class AlertManager: ObservableObject{
         case .emptyField:
             alert = AlertContent(title: "No speech detected!", message: "Please record longer voice to detect speech", primaryButtonText: "OK", primaryAction: {})
         case .audioPermission:
-            alert = AlertContent(title: "Microphone Permission Required!", message: "Please go settings and enable microphone permission", primaryButtonText: "Go To Settings", primaryAction: { [weak self] in
-                guard let self else { return }
+            alert = AlertContent(title: "Microphone Permission Required!", message: "Please go settings and enable microphone permission", primaryButtonText: "Go To Settings", primaryAction: {
                 SettingsURLHandler.openAppSettings()
             })
         case .speechPermission:
-            alert = AlertContent(title: "Speech Permission Required!", message: "Please go settings and enable speech recognition permission", primaryButtonText: "Go To Settings", primaryAction: { [weak self] in
-                guard let self else { return }
+            alert = AlertContent(title: "Speech Permission Required!", message: "Please go settings and enable speech recognition permission", primaryButtonText: "Go To Settings", primaryAction: { 
                 SettingsURLHandler.openAppSettings()
             })
             

@@ -10,7 +10,7 @@ import AVFoundation
 
 struct ContentView: View {
     @EnvironmentObject var networkManager: NetworkManager
-    @StateObject var chatVM: ContentViewModel //TODO: may equal
+    @StateObject var chatViewModel: ContentViewModel
     @StateObject private var alertManager = AlertManager()
     @StateObject private var toastManager = ToastManager()
     
@@ -20,7 +20,7 @@ struct ContentView: View {
     init(networkManager: NetworkManager) {
        let alertManager = AlertManager()
        _alertManager = StateObject(wrappedValue: alertManager)
-       _chatVM = StateObject(wrappedValue: ContentViewModel(
+       _chatViewModel = StateObject(wrappedValue: ContentViewModel(
         networkManager: networkManager,
         alertManager: alertManager))
     }
@@ -34,26 +34,26 @@ struct ContentView: View {
             VStack {
                 
                 //LANGUAGE PICKER, SETTINGS
-                ToolbarView(pickedLanguage: $pickedLanguage) { selection in
+                ToolbarView() { selection in
                     activeSettingsSheet = selection
                 }
                 
-                //CHAT BUBBLE
-                ChatMessagesView(messagesCoordinator: chatVM.messageCoordinator)
+                //CHAT MESSAGE LIST
+                ChatMessagesView(messagesCoordinator: chatViewModel.messageCoordinator)
                 
                 //RECORD
-                RecordButton (contentState: $chatVM.contentState) {
-                    chatVM.recordingButtonTapped()
+                RecordButton (contentState: $chatViewModel.contentState) {
+                    chatViewModel.recordingButtonTapped()
                 }
                 
                 //PROMPTS LIST
                 PromptView(didPromptSelected: { prompt in
-                    chatVM.sendPromptRequest(prompt: prompt)
+                    chatViewModel.sendPromptRequest(prompt: prompt)
                 })
             }
             
             //GLOW EFFECT in Recording
-            if chatVM.contentState == .recording {
+            if chatViewModel.contentState == .recording {
                 GlowEffect()
                     .transition(.opacity)
             }
@@ -66,10 +66,11 @@ struct ContentView: View {
             }
 
         }
+        .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
-            if !chatVM.isPermissionsValid(){
-                chatVM.requestAllPermissions()
+            if !chatViewModel.isPermissionsValid(){
+                chatViewModel.requestAllPermissions()
             }
             
         }
@@ -80,8 +81,7 @@ struct ContentView: View {
                   primaryButton: .default(Text(alertContent.primaryButtonText)){
                       alertContent.primaryAction()
             },    secondaryButton: .cancel())
-        }
-        .sheet(item: $activeSettingsSheet) { selection in
+        }.sheet(item: $activeSettingsSheet) { selection in
             sheetView(for: selection)
         }.onChange(of: networkManager.isConnectionActive) { isActive in
             if !isActive {
@@ -91,20 +91,17 @@ struct ContentView: View {
     }
 }
 
-
-private func sheetView (for settingsMenu: SettingsMenuData) -> some View {
-    switch settingsMenu {
+private func sheetView (for settingsData: SettingsMenuData) -> some View {
+    switch settingsData {
     case .about:
-        return AboutSheet()
+        return AboutSheet(settingsMenuData: settingsData)
             .frame(maxWidth: .infinity, maxHeight: 300)
     }
 }
 
-
 private struct SettingsButton: View {
-    
     var onAction: () -> Void
-    
+
     var body: some View {
         
         Button  {
@@ -119,6 +116,7 @@ private struct SettingsButton: View {
 }
 
 #Preview {
-    ContentView(networkManager: NetworkManager())
+    ContentView(networkManager: .init())
+        .environmentObject(NetworkManager())
         
 }

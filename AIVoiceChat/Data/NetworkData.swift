@@ -8,5 +8,7 @@
 import Foundation
 
 struct NetworkData {
-    static let chatgptApiKey = "Bearer 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"
+    static var chatgptApiKey: String {
+        ProcessInfo.processInfo.environment["chatGPT_api_key"] ?? ""
+    }
 }

@@ -14,7 +14,6 @@ struct UserBubbleView: View {
     var body: some View {
         Text(text)
             .modifier(UserBubbleStyleModifier())
-            
     }
 }
 

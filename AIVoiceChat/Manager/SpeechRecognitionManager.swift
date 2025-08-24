@@ -26,12 +26,13 @@ final class SpeechRecognitionManager: ObservableObject, SpeechRecognizer {
        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
        let audioNote = avAudioEngine.inputNode
         
-        //TODO: Fetch from User Default
         let languageCode = UserDefaultsManager.shared.speechCountry.code
         print("languageCode: \(languageCode)")
         let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: languageCode))
         
-        recognitionTask = speechRecognizer!.recognitionTask(with: recognitionRequest!) { result, error in //TODO: Remove Force Unwrap
+        guard let recognitionRequest else { return }
+        
+        recognitionTask = speechRecognizer!.recognitionTask(with: recognitionRequest) { result, error in
             if let result = result {
                 DispatchQueue.main.async {
                     self.speechTranscript = result.bestTranscription.formattedString
@@ -40,9 +41,8 @@ final class SpeechRecognitionManager: ObservableObject, SpeechRecognizer {
         }
        
         let format = audioNote.outputFormat(forBus: 0)
-        audioNote.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] audioBuffer, _ in
-            guard let self else { return }
-            recognitionRequest?.append(audioBuffer)
+        audioNote.installTap(onBus: 0, bufferSize: 1024, format: format) { audioBuffer, _ in
+            recognitionRequest.append(audioBuffer)
         }
         
         avAudioEngine.prepare()

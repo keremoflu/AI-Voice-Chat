@@ -7,22 +7,18 @@
 
 import SwiftUI
 
-//TODO: Make this work for speech recognition
 struct LanguagePickerView: View {
-    //todo
-    @Binding var picked: Country
     
+    private var picked = UserDefaultsManager.shared.speechCountry
     var body: some View {
         
         Menu {
-            
             VStack {
                 Text("Set Speech Language")
                     .font(.quickSand(size: 12, name: .regular))
                 ForEach(CountryData.countries, id: \.self) { item in
                     Button {
-                        picked = item
-                        UserDefaultsManager.shared.speechCountry = picked
+                        UserDefaultsManager.shared.speechCountry = item
                     } label: {
                         Text("\(item.flag) \(item.name)")
                     }
@@ -31,7 +27,6 @@ struct LanguagePickerView: View {
         } label: {
             PickerButtonView(flagname: picked.flag, name: picked.name)
             .modifier(LanguagePickerBackground())
-            
         }
     }
 }
@@ -64,11 +59,10 @@ private struct LanguagePickerBackground: ViewModifier {
                 Capsule()
                     .stroke(Color.grayPrimary, lineWidth: 1)
             )
-        
     }
 }
 
 
 #Preview {
-    LanguagePickerView(picked: .constant(Country(name: "English", flag: "🇬🇧", code: "en-US")))
+    LanguagePickerView()
 }
