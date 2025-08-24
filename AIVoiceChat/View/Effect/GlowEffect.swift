@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GlowEffect: View {
     
-    @Binding var isAnimating: Bool
+    private var isAnimating: Bool = true
     @State private var isGrowing = false
     
     @State private var lineWidth: CGFloat = 16.0
@@ -52,5 +52,5 @@ struct GlowEffect: View {
 
 
 #Preview {
-    GlowEffect(isAnimating: .constant(true))
+    GlowEffect()
 }
