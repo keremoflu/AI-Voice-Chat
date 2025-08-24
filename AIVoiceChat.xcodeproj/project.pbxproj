@@ -158,6 +158,14 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		0C0154E02E5B4A8500E37C0B /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				0C0154DA2E5B2E6100E37C0B /* Toast.swift */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
 		0C433ADC2E574DBB00475090 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,13 +226,13 @@
 		0C433AF32E57599F00475090 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0C0154E02E5B4A8500E37C0B /* Animation */,
 				0C6D32452E589F6E00A8BA50 /* Network */,
 				0C433AF42E5759A600475090 /* Country.swift */,
 				0C433AFD2E576B5700475090 /* Prompt.swift */,
 				0C933F8C2E57CA9C000CF37C /* AlertContent.swift */,
 				0C6D323F2E586D7A00A8BA50 /* ContentViewState.swift */,
 				0C6D32672E592F1800A8BA50 /* Message.swift */,
-				0C0154DA2E5B2E6100E37C0B /* Toast.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
