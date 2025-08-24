@@ -46,13 +46,7 @@ final class AudioPermissionManager: ObservableObject {
         case .undetermined:
             responseState(.failure(.unknown))
         case .denied:
-            alertManager.showAlert(for: .goToSettings(title: "Microphone Permission Required.", message: "Please go to settings and enable microphone permission", primaryButtonText: "Go Settings",
-            onAction: {
-                    do { try SettingsURLHandler.shared.openAppSettings() } catch {
-                    
-                    }
-               }
-            ))
+            alertManager.showAlertContent(type: .audioPermission)
             responseState(.failure(.disabled))
         case .granted:
             responseState(.success(.granted))

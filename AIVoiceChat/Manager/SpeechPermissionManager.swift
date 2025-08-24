@@ -45,18 +45,7 @@ final class SpeechPermissionManager: ObservableObject {
         case .authorized:
             responseState(.success(.authorized))
         case .denied:
-            alertManager.showAlert(for: .goToSettings(
-                title: "Speech Recognition Permission Required",
-                message: "Please go to settings and enable speech recognition permission",
-                primaryButtonText: "Go To Settings",
-                onAction: {
-                    do {
-                        try SettingsURLHandler.shared.openAppSettings()
-                    } catch {
-                        
-                    }
-                }
-            ))
+            alertManager.showAlertContent(type: .speechPermission)
             responseState(.failure(.denied))
         case .restricted:
             responseState(.failure(.restricted))
