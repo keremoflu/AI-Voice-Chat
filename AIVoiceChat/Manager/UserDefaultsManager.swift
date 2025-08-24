@@ -13,6 +13,7 @@ final class UserDefaultsManager {
     
     enum UserDefaultKeys: String {
         case speechCountryKey = "speechCountry"
+        case lastMessageKey = "lastMessage"
     }
     
     var speechCountry: Country {
@@ -29,6 +30,16 @@ final class UserDefaultsManager {
             if let data = try? JSONEncoder().encode(newValue) {
                 UserDefaults.standard.set(data, forKey: UserDefaultKeys.speechCountryKey.rawValue)
             }
+        }
+    }
+    
+    var lastMessage: String? {
+        get {
+            return UserDefaults.standard.string(forKey: UserDefaultKeys.lastMessageKey.rawValue)
+        }
+        
+        set (newValue) {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultKeys.lastMessageKey.rawValue)
         }
     }
 }
