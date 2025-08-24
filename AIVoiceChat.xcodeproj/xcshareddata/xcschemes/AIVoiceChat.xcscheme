@@ -53,7 +53,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "chatGPT_api_key"
-            value = "Bearer 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"
+            value = "Bearer API_KEY_HERE"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
