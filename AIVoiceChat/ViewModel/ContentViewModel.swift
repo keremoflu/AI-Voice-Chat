@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class ChatViewModel: ObservableObject {
+class ContentViewModel: ObservableObject {
     @Published var messages: [Message] = []
     @Published var pickedLanguage = UserDefaultsManager.shared.speechCountry
     @Published var audioPermissionManager: AudioPermissionManager
@@ -63,6 +63,23 @@ class ChatViewModel: ObservableObject {
 
     }
     
+    func sendPromptRequest(prompt: Prompt) {
+        
+        guard contentState == .readyToRecord else {
+            alertManager.showAlertContent(type: .inProgress)
+            return
+        }
+        
+        Task {
+            do {
+                try await send(text: prompt.text)
+                
+            } catch (let error) {
+                alertManager.showAlertContent(type: .promptRequestFailed(error))
+            }
+        }
+    }
+    
     func setBubbleStatusActive(_ bool: Bool) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -80,6 +97,7 @@ class ChatViewModel: ObservableObject {
     private func addMessage(_ message: Message) {
         messages.append(message)
         CoreDataManager.shared.saveMessage(message, context: context)
+        UserDefaultsManager.shared.lastMessage = message.text
     }
     
     func setFirstLoading() {
@@ -101,16 +119,12 @@ class ChatViewModel: ObservableObject {
         let speechStatus = speechPermissionmanager.permissionStatus
         
         if audioStatus == .denied {
-            alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
-                self?.openSettings()
-            }))
+            alertManager.showAlertContent(type: .audioPermission)
             return
         }
 
         if speechStatus == .denied || speechStatus == .restricted {
-            alertManager.showAlert(for: .goToSettings(title: "Speech Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
-                self?.openSettings()
-            }))
+            alertManager.showAlertContent(type: .speechPermission)
             return
         }
 
@@ -122,9 +136,7 @@ class ChatViewModel: ObservableObject {
                         self?.requestSpeechRecognitionPermission()
                         
                     case .failure:
-                        self?.alertManager.showAlert(for: .goToSettings(title: "Audio Permission Required", message: "permission required", primaryButtonText: "Go To Settings", onAction: { [weak self] in
-                            self?.openSettings()
-                        }))
+                        self?.alertManager.showAlertContent(type: .audioPermission)
                         return
                     }
                 }
@@ -140,12 +152,7 @@ class ChatViewModel: ObservableObject {
                 print("requestSpeechRecognitionPermission, speechpermission success.")
             case .failure(let err):
                 if case .restricted = err {
-                    self?.alertManager.showAlert(for: .infoMessage(
-                        title: "Speech Permission Required",
-                        message: "Speech Recognition is restricted on this device. Please enable it.",
-                        primaryButtonText: "OK",
-                        onAction: {}
-                    ))
+                    self?.alertManager.showAlertContent(type: .speechPermission)
                 }
                 
             }
@@ -165,25 +172,27 @@ class ChatViewModel: ObservableObject {
 //        }
 //    }
     
-    func requestPermissions() {
-        audioPermissionManager.startRequest { [weak self] result in
-            guard let self else { return }
-            
-            switch result {
-            case .success:
-                print("permission success")
-            case .failure(_):
-                print("")
-                //TODO: Error Here
-            }
-        }
-    }
+//    func requestPermissions() {
+//        audioPermissionManager.startRequest { [weak self] result in
+//            guard let self else { return }
+//            
+//            switch result {
+//            case .success:
+//                print("permission success")
+//            case .failure(_):
+//                print("")
+//                //TODO: Error Here
+//            }
+//        }
+//    }
     
     func send(text: String) async throws {
         //TODO: Add error
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         guard !trimmed.isEmpty else {
-            contentState = .readyToRecord
+            await MainActor.run {
+                contentState = .readyToRecord }
             return
         }
         
@@ -202,14 +211,15 @@ class ChatViewModel: ObservableObject {
             }
         } catch {
             setBubbleStatusActive(false)
-            addMessage(Message(id: UUID(), sender: .ai, text: "Response Failed, please try again later."))
+            await MainActor.run { contentState = .readyToRecord }
+            throw ChatGPTManager.ChatGPTError.requestFailed
         }
         
         await MainActor.run {
             contentState = .readyToRecord
         }
     }
-    
+
     func recordingButtonTapped() {
         guard isPermissionsValid() else {
             requestAllPermissions()
@@ -221,21 +231,69 @@ class ChatViewModel: ObservableObject {
             do {
                 contentState = .recording
                 try speechRecognitionManager.startSpeechRecognition()
-            } catch {
+            } catch (let error){
                 contentState = .readyToRecord
+                alertManager.showAlertContent(type: .recordingFailed(error))
             }
             
         case .recording:
             contentState = .loadingAfterRecord
             speechRecognitionManager.stopSpeechRecognition { [weak self] transcript in
                 guard let self else { return }
-                Task { try await self.send(text: transcript) }
+                
+                Task {
+                    if transcript.isEmpty {
+                        await MainActor.run {
+                            self.alertManager.showAlertContent(type: .emptyField)
+                            self.contentState = .readyToRecord
+                        }
+                        return
+                    }
+                    
+                    do {
+                        try await self.send(text: transcript)
+                    } catch {
+                        await MainActor.run {
+                            self.alertManager.showAlertContent(type: .transcriptionFailed(error))
+                            self.contentState = .readyToRecord
+                        }
+                    }
+                }
             }
             
         case .loadingAfterRecord:
-            break
+            alertManager.showAlertContent(type: .inProgress)
         }
     }
+
+
+    
+//    func recordingButtonTapped() {
+//        guard isPermissionsValid() else {
+//            requestAllPermissions()
+//            return
+//        }
+//        
+//        switch contentState {
+//        case .readyToRecord:
+//            do {
+//                contentState = .recording
+//                try speechRecognitionManager.startSpeechRecognition()
+//            } catch {
+//                contentState = .readyToRecord
+//            }
+//            
+//        case .recording:
+//            contentState = .loadingAfterRecord
+//            speechRecognitionManager.stopSpeechRecognition { [weak self] transcript in
+//                guard let self else { return }
+//                Task { try await self.send(text: transcript) }
+//            }
+//            
+//        case .loadingAfterRecord:
+//            break
+//        }
+//    }
     
     func openSettings() {
         if let url = URL(string: UIApplication.openSettingsURLString) {
