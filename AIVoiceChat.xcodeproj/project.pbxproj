@@ -19,20 +19,26 @@
 		0C433AFA2E57674B00475090 /* PromptHorizontalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C433AF92E57674B00475090 /* PromptHorizontalListView.swift */; };
 		0C433AFE2E576B5700475090 /* Prompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C433AFD2E576B5700475090 /* Prompt.swift */; };
 		0C433B002E576B7700475090 /* PromptData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C433AFF2E576B7700475090 /* PromptData.swift */; };
+		0C4B29F92E5A574E00AFA509 /* AboutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4B29F82E5A574E00AFA509 /* AboutSheet.swift */; };
+		0C4B29FB2E5A5B4800AFA509 /* SettingsMenuData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4B29FA2E5A5B4800AFA509 /* SettingsMenuData.swift */; };
+		0C4B29FD2E5A7EDF00AFA509 /* Extension+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4B29FC2E5A7EDF00AFA509 /* Extension+Animation.swift */; };
+		0C4B2A002E5A85EF00AFA509 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4B29FF2E5A85EF00AFA509 /* ViewModifiers.swift */; };
+		0C4B2A022E5A870500AFA509 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4B2A012E5A870500AFA509 /* View+Extension.swift */; };
 		0C6D32402E586D7A00A8BA50 /* ContentViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D323F2E586D7A00A8BA50 /* ContentViewState.swift */; };
 		0C6D32422E586DBC00A8BA50 /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32412E586DBC00A8BA50 /* RecordButton.swift */; };
 		0C6D32442E58771100A8BA50 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32432E58771100A8BA50 /* TestView.swift */; };
 		0C6D32472E589F7700A8BA50 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32462E589F7700A8BA50 /* HTTPMethod.swift */; };
 		0C6D32492E589FD700A8BA50 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32482E589FD700A8BA50 /* Request.swift */; };
 		0C6D324B2E58A02300A8BA50 /* ChatGPTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D324A2E58A02300A8BA50 /* ChatGPTManager.swift */; };
-		0C6D324D2E58A0E200A8BA50 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D324C2E58A0E200A8BA50 /* ChatMessage.swift */; };
+		0C6D324D2E58A0E200A8BA50 /* ChatGPTResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D324C2E58A0E200A8BA50 /* ChatGPTResponse.swift */; };
 		0C6D324F2E58A15100A8BA50 /* NetworkData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D324E2E58A15100A8BA50 /* NetworkData.swift */; };
 		0C6D32532E58A24700A8BA50 /* PromptBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32522E58A24700A8BA50 /* PromptBuilder.swift */; };
 		0C6D32552E58A6FB00A8BA50 /* ChatGPTData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32542E58A6FB00A8BA50 /* ChatGPTData.swift */; };
 		0C6D32582E58D82C00A8BA50 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32572E58D82C00A8BA50 /* NetworkManager.swift */; };
 		0C6D325B2E58ED0500A8BA50 /* SettingsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D325A2E58ED0500A8BA50 /* SettingsPickerView.swift */; };
-		0C6D325D2E59073800A8BA50 /* AudioRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D325C2E59073800A8BA50 /* AudioRecordManager.swift */; };
-		0C6D325F2E590CCA00A8BA50 /* TestAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D325E2E590CCA00A8BA50 /* TestAudioPlayer.swift */; };
+		0C6D32632E592A4B00A8BA50 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32622E592A4B00A8BA50 /* UserDefaultsManager.swift */; };
+		0C6D32662E592ED500A8BA50 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32652E592ED500A8BA50 /* ChatViewModel.swift */; };
+		0C6D32682E592F1800A8BA50 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D32672E592F1800A8BA50 /* Message.swift */; };
 		0C933F822E57934F000CF37C /* AudioPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F812E57934F000CF37C /* AudioPermissionManager.swift */; };
 		0C933F852E579735000CF37C /* SettingsURLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F842E579735000CF37C /* SettingsURLHandler.swift */; };
 		0C933F892E579C5A000CF37C /* AVAudioSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C933F882E579C5A000CF37C /* AVAudioSession+Extension.swift */; };
@@ -44,6 +50,14 @@
 		0CB5E1382E57477F00A25378 /* AIVoiceChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB5E1342E57477F00A25378 /* AIVoiceChatApp.swift */; };
 		0CB5E1392E57477F00A25378 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB5E1362E57477F00A25378 /* ContentView.swift */; };
 		0CB5E13A2E57477F00A25378 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CB5E1352E57477F00A25378 /* Assets.xcassets */; };
+		0CCAA5932E5A4C2900A2945E /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAA5922E5A4C2900A2945E /* PersistanceController.swift */; };
+		0CCAA59A2E5A4EB900A2945E /* aichatdatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAA5982E5A4EB900A2945E /* aichatdatabase.xcdatamodeld */; };
+		0CCAA59C2E5A4F0B00A2945E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAA59B2E5A4F0B00A2945E /* CoreDataManager.swift */; };
+		0CEE873D2E599BE2004524B1 /* SpeechPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE873C2E599BE2004524B1 /* SpeechPermissionManager.swift */; };
+		0CEE87412E59D475004524B1 /* SpeechRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE87402E59D475004524B1 /* SpeechRecognitionManager.swift */; };
+		0CEE87452E59E5C7004524B1 /* Extension+ChatGPTResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE87442E59E5C7004524B1 /* Extension+ChatGPTResponse.swift */; };
+		0CEE87482E59F99E004524B1 /* GlowEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE87472E59F99E004524B1 /* GlowEffect.swift */; };
+		0CEE874A2E5A261A004524B1 /* AlertTestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE87492E5A261A004524B1 /* AlertTestHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,20 +74,26 @@
 		0C433AF92E57674B00475090 /* PromptHorizontalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptHorizontalListView.swift; sourceTree = "<group>"; };
 		0C433AFD2E576B5700475090 /* Prompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prompt.swift; sourceTree = "<group>"; };
 		0C433AFF2E576B7700475090 /* PromptData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptData.swift; sourceTree = "<group>"; };
+		0C4B29F82E5A574E00AFA509 /* AboutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSheet.swift; sourceTree = "<group>"; };
+		0C4B29FA2E5A5B4800AFA509 /* SettingsMenuData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuData.swift; sourceTree = "<group>"; };
+		0C4B29FC2E5A7EDF00AFA509 /* Extension+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Animation.swift"; sourceTree = "<group>"; };
+		0C4B29FF2E5A85EF00AFA509 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
+		0C4B2A012E5A870500AFA509 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		0C6D323F2E586D7A00A8BA50 /* ContentViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewState.swift; sourceTree = "<group>"; };
 		0C6D32412E586DBC00A8BA50 /* RecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
 		0C6D32432E58771100A8BA50 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		0C6D32462E589F7700A8BA50 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		0C6D32482E589FD700A8BA50 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		0C6D324A2E58A02300A8BA50 /* ChatGPTManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatGPTManager.swift; sourceTree = "<group>"; };
-		0C6D324C2E58A0E200A8BA50 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		0C6D324C2E58A0E200A8BA50 /* ChatGPTResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatGPTResponse.swift; sourceTree = "<group>"; };
 		0C6D324E2E58A15100A8BA50 /* NetworkData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkData.swift; sourceTree = "<group>"; };
 		0C6D32522E58A24700A8BA50 /* PromptBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptBuilder.swift; sourceTree = "<group>"; };
 		0C6D32542E58A6FB00A8BA50 /* ChatGPTData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatGPTData.swift; sourceTree = "<group>"; };
 		0C6D32572E58D82C00A8BA50 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0C6D325A2E58ED0500A8BA50 /* SettingsPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPickerView.swift; sourceTree = "<group>"; };
-		0C6D325C2E59073800A8BA50 /* AudioRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecordManager.swift; sourceTree = "<group>"; };
-		0C6D325E2E590CCA00A8BA50 /* TestAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAudioPlayer.swift; sourceTree = "<group>"; };
+		0C6D32622E592A4B00A8BA50 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		0C6D32652E592ED500A8BA50 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		0C6D32672E592F1800A8BA50 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		0C933F812E57934F000CF37C /* AudioPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPermissionManager.swift; sourceTree = "<group>"; };
 		0C933F842E579735000CF37C /* SettingsURLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsURLHandler.swift; sourceTree = "<group>"; };
 		0C933F882E579C5A000CF37C /* AVAudioSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVAudioSession+Extension.swift"; sourceTree = "<group>"; };
@@ -86,6 +106,14 @@
 		0CB5E1342E57477F00A25378 /* AIVoiceChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIVoiceChatApp.swift; sourceTree = "<group>"; };
 		0CB5E1352E57477F00A25378 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0CB5E1362E57477F00A25378 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		0CCAA5922E5A4C2900A2945E /* PersistanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
+		0CCAA5992E5A4EB900A2945E /* aichatdatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = aichatdatabase.xcdatamodel; sourceTree = "<group>"; };
+		0CCAA59B2E5A4F0B00A2945E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		0CEE873C2E599BE2004524B1 /* SpeechPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechPermissionManager.swift; sourceTree = "<group>"; };
+		0CEE87402E59D475004524B1 /* SpeechRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionManager.swift; sourceTree = "<group>"; };
+		0CEE87442E59E5C7004524B1 /* Extension+ChatGPTResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+ChatGPTResponse.swift"; sourceTree = "<group>"; };
+		0CEE87472E59F99E004524B1 /* GlowEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlowEffect.swift; sourceTree = "<group>"; };
+		0CEE87492E5A261A004524B1 /* AlertTestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTestHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +160,9 @@
 			children = (
 				0C433AEB2E574E8300475090 /* Font+Extension.swift */,
 				0C933F882E579C5A000CF37C /* AVAudioSession+Extension.swift */,
+				0CEE87442E59E5C7004524B1 /* Extension+ChatGPTResponse.swift */,
+				0C4B29FC2E5A7EDF00AFA509 /* Extension+Animation.swift */,
+				0C4B2A012E5A870500AFA509 /* View+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -139,6 +170,9 @@
 		0C433AF02E5755C900475090 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0C4B29FE2E5A85DD00AFA509 /* Modifier */,
+				0C4B29F72E5A574600AFA509 /* Sheet */,
+				0CEE87462E59F98E004524B1 /* Effect */,
 				0C6D32592E58ECF600A8BA50 /* Menu */,
 				0C933F932E57D27C000CF37C /* Shape */,
 				0C933F8E2E57CF99000CF37C /* Chat */,
@@ -156,6 +190,7 @@
 				0C433AFD2E576B5700475090 /* Prompt.swift */,
 				0C933F8C2E57CA9C000CF37C /* AlertContent.swift */,
 				0C6D323F2E586D7A00A8BA50 /* ContentViewState.swift */,
+				0C6D32672E592F1800A8BA50 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -167,8 +202,25 @@
 				0C433AFF2E576B7700475090 /* PromptData.swift */,
 				0C6D324E2E58A15100A8BA50 /* NetworkData.swift */,
 				0C6D32542E58A6FB00A8BA50 /* ChatGPTData.swift */,
+				0C4B29FA2E5A5B4800AFA509 /* SettingsMenuData.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		0C4B29F72E5A574600AFA509 /* Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				0C4B29F82E5A574E00AFA509 /* AboutSheet.swift */,
+			);
+			path = Sheet;
+			sourceTree = "<group>";
+		};
+		0C4B29FE2E5A85DD00AFA509 /* Modifier */ = {
+			isa = PBXGroup;
+			children = (
+				0C4B29FF2E5A85EF00AFA509 /* ViewModifiers.swift */,
+			);
+			path = Modifier;
 			sourceTree = "<group>";
 		};
 		0C6D32452E589F6E00A8BA50 /* Network */ = {
@@ -176,7 +228,7 @@
 			children = (
 				0C6D32462E589F7700A8BA50 /* HTTPMethod.swift */,
 				0C6D32482E589FD700A8BA50 /* Request.swift */,
-				0C6D324C2E58A0E200A8BA50 /* ChatMessage.swift */,
+				0C6D324C2E58A0E200A8BA50 /* ChatGPTResponse.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -190,6 +242,14 @@
 			path = Menu;
 			sourceTree = "<group>";
 		};
+		0C6D32642E592ECC00A8BA50 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0C6D32652E592ED500A8BA50 /* ChatViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		0C933F802E579345000CF37C /* Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -197,8 +257,11 @@
 				0C933F8A2E57C63C000CF37C /* AlertManager.swift */,
 				0C6D324A2E58A02300A8BA50 /* ChatGPTManager.swift */,
 				0C6D32572E58D82C00A8BA50 /* NetworkManager.swift */,
-				0C6D325C2E59073800A8BA50 /* AudioRecordManager.swift */,
-				0C6D325E2E590CCA00A8BA50 /* TestAudioPlayer.swift */,
+				0C6D32622E592A4B00A8BA50 /* UserDefaultsManager.swift */,
+				0CEE873C2E599BE2004524B1 /* SpeechPermissionManager.swift */,
+				0CEE87402E59D475004524B1 /* SpeechRecognitionManager.swift */,
+				0CEE87492E5A261A004524B1 /* AlertTestHandler.swift */,
+				0CCAA59B2E5A4F0B00A2945E /* CoreDataManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -208,6 +271,7 @@
 			children = (
 				0C933F842E579735000CF37C /* SettingsURLHandler.swift */,
 				0C6D32522E58A24700A8BA50 /* PromptBuilder.swift */,
+				0CCAA5922E5A4C2900A2945E /* PersistanceController.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -248,6 +312,8 @@
 		0CB5E1372E57477F00A25378 /* AIVoiceChat */ = {
 			isa = PBXGroup;
 			children = (
+				0CCAA5942E5A4E2900A2945E /* Entity */,
+				0C6D32642E592ECC00A8BA50 /* ViewModel */,
 				0C933F832E579702000CF37C /* Helper */,
 				0C933F802E579345000CF37C /* Manager */,
 				0C433AF62E575ADE00475090 /* Data */,
@@ -262,6 +328,22 @@
 				0C6D32432E58771100A8BA50 /* TestView.swift */,
 			);
 			path = AIVoiceChat;
+			sourceTree = "<group>";
+		};
+		0CCAA5942E5A4E2900A2945E /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				0CCAA5982E5A4EB900A2945E /* aichatdatabase.xcdatamodeld */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		0CEE87462E59F98E004524B1 /* Effect */ = {
+			isa = PBXGroup;
+			children = (
+				0CEE87472E59F99E004524B1 /* GlowEffect.swift */,
+			);
+			path = Effect;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -342,34 +424,48 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C433AF22E5755D200475090 /* LanguagePickerView.swift in Sources */,
-				0C6D325F2E590CCA00A8BA50 /* TestAudioPlayer.swift in Sources */,
 				0C433B002E576B7700475090 /* PromptData.swift in Sources */,
 				0C6D32472E589F7700A8BA50 /* HTTPMethod.swift in Sources */,
 				0C933F8D2E57CA9C000CF37C /* AlertContent.swift in Sources */,
+				0CCAA5932E5A4C2900A2945E /* PersistanceController.swift in Sources */,
+				0CEE874A2E5A261A004524B1 /* AlertTestHandler.swift in Sources */,
 				0C433AFE2E576B5700475090 /* Prompt.swift in Sources */,
+				0C4B29FD2E5A7EDF00AFA509 /* Extension+Animation.swift in Sources */,
+				0C4B29FB2E5A5B4800AFA509 /* SettingsMenuData.swift in Sources */,
+				0C6D32662E592ED500A8BA50 /* ChatViewModel.swift in Sources */,
 				0C6D32532E58A24700A8BA50 /* PromptBuilder.swift in Sources */,
 				0C933F952E57D289000CF37C /* SpecificRoundedCorner.swift in Sources */,
 				0CB5E1382E57477F00A25378 /* AIVoiceChatApp.swift in Sources */,
+				0CEE873D2E599BE2004524B1 /* SpeechPermissionManager.swift in Sources */,
 				0C6D324B2E58A02300A8BA50 /* ChatGPTManager.swift in Sources */,
+				0CEE87452E59E5C7004524B1 /* Extension+ChatGPTResponse.swift in Sources */,
 				0C433AFA2E57674B00475090 /* PromptHorizontalListView.swift in Sources */,
-				0C6D324D2E58A0E200A8BA50 /* ChatMessage.swift in Sources */,
+				0C6D324D2E58A0E200A8BA50 /* ChatGPTResponse.swift in Sources */,
 				0C6D32422E586DBC00A8BA50 /* RecordButton.swift in Sources */,
 				0C6D325B2E58ED0500A8BA50 /* SettingsPickerView.swift in Sources */,
 				0C933F8B2E57C63C000CF37C /* AlertManager.swift in Sources */,
+				0C4B2A022E5A870500AFA509 /* View+Extension.swift in Sources */,
 				0CB5E1392E57477F00A25378 /* ContentView.swift in Sources */,
 				0C6D324F2E58A15100A8BA50 /* NetworkData.swift in Sources */,
 				0C6D32552E58A6FB00A8BA50 /* ChatGPTData.swift in Sources */,
+				0CCAA59C2E5A4F0B00A2945E /* CoreDataManager.swift in Sources */,
 				0C433AF52E5759A600475090 /* Country.swift in Sources */,
 				0C933F972E57D514000CF37C /* AIBubbleView.swift in Sources */,
 				0C6D32402E586D7A00A8BA50 /* ContentViewState.swift in Sources */,
+				0CCAA59A2E5A4EB900A2945E /* aichatdatabase.xcdatamodeld in Sources */,
+				0C4B2A002E5A85EF00AFA509 /* ViewModifiers.swift in Sources */,
 				0C933F822E57934F000CF37C /* AudioPermissionManager.swift in Sources */,
+				0CEE87482E59F99E004524B1 /* GlowEffect.swift in Sources */,
 				0C6D32492E589FD700A8BA50 /* Request.swift in Sources */,
 				0C433AF82E575AE500475090 /* CountryData.swift in Sources */,
 				0C933F852E579735000CF37C /* SettingsURLHandler.swift in Sources */,
+				0C6D32682E592F1800A8BA50 /* Message.swift in Sources */,
+				0C6D32632E592A4B00A8BA50 /* UserDefaultsManager.swift in Sources */,
+				0CEE87412E59D475004524B1 /* SpeechRecognitionManager.swift in Sources */,
 				0C6D32442E58771100A8BA50 /* TestView.swift in Sources */,
+				0C4B29F92E5A574E00AFA509 /* AboutSheet.swift in Sources */,
 				0C6D32582E58D82C00A8BA50 /* NetworkManager.swift in Sources */,
 				0C933F892E579C5A000CF37C /* AVAudioSession+Extension.swift in Sources */,
-				0C6D325D2E59073800A8BA50 /* AudioRecordManager.swift in Sources */,
 				0C933F902E57CFB6000CF37C /* UserBubbleView.swift in Sources */,
 				0C433AEC2E574E8300475090 /* Font+Extension.swift in Sources */,
 			);
@@ -511,6 +607,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIVoiceChat/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need this permission to convert your voice into chat requests.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need this permission to transcribe your speech into text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -546,6 +643,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIVoiceChat/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need this permission to convert your voice into chat requests.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need this permission to transcribe your speech into text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -591,6 +689,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0CCAA5982E5A4EB900A2945E /* aichatdatabase.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0CCAA5992E5A4EB900A2945E /* aichatdatabase.xcdatamodel */,
+			);
+			currentVersion = 0CCAA5992E5A4EB900A2945E /* aichatdatabase.xcdatamodel */;
+			path = aichatdatabase.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0CB5E11E2E57477300A25378 /* Project object */;
 }
