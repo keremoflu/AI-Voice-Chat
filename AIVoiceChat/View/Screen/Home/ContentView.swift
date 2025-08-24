@@ -10,18 +10,21 @@ import AVFoundation
 
 struct ContentView: View {
     @EnvironmentObject var networkManager: NetworkManager
-    @StateObject var chatVM = ContentViewModel()
+    @StateObject var chatVM: ContentViewModel //TODO: may equal
     @StateObject private var alertManager = AlertManager()
     @StateObject private var toastManager = ToastManager()
+    
     
     @State var isAboutSheetVisible = false
     @State var pickedLanguage = UserDefaultsManager.shared.speechCountry
     @State var activeSettingsSheet: SettingsMenuData? = nil
   
-    init() {
+    init(networkManager: NetworkManager) {
        let alertManager = AlertManager()
        _alertManager = StateObject(wrappedValue: alertManager)
-       _chatVM = StateObject(wrappedValue: ContentViewModel(alertManager: alertManager))
+       _chatVM = StateObject(wrappedValue: ContentViewModel(
+        networkManager: networkManager,
+        alertManager: alertManager))
     }
     
     var body: some View {
@@ -29,8 +32,6 @@ struct ContentView: View {
            
             Color.background
                 .ignoresSafeArea()
-            
-            
             
             VStack {
                 
@@ -93,9 +94,6 @@ struct ContentView: View {
         
     }
     
-   
-    
-   
 }
 
 
@@ -126,6 +124,6 @@ private struct SettingsButton: View {
 }
 
 #Preview {
-    ContentView()
-        .environmentObject(NetworkManager())
+    ContentView(networkManager: NetworkManager())
+        
 }
