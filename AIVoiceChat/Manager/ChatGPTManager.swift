@@ -40,14 +40,14 @@ final class ChatGPTManager: Request {
         }
     }
     
-    func getRequestBody(message: String) -> [String : Any] {
+    private func getRequestBody(message: String) -> [String : Any] {
         return [
             "model" : ChatGPTData.Models.gpt4omini.name,
             "input" : PromptBuilder.getPrompt(for: message)
         ]
     }
     
-    func isResponseSuccess(urlResponse: URLResponse) throws -> Bool {
+    private func isResponseSuccess(urlResponse: URLResponse) throws -> Bool {
         guard let statusCode = (urlResponse as? HTTPURLResponse)?.statusCode else {
             throw ChatGPTError.invalidResponse
         }
@@ -114,7 +114,7 @@ extension ChatGPTManager {
             case .fetchRequestFailed:
                 return "Fetch Request Failed!"
             case .requestFailed:
-                return "CHATGPTMANAGER Request Failed!"
+                return "Server Request Failed!"
             case .invalidResponse:
                 return "Invalid Response"
             case .decodeFailed(let message):
