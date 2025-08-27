@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LanguagePickerView: View {
     
-    private var picked = UserDefaultsManager.shared.speechCountry
+    @Binding var picked: Country
     var body: some View {
         
         Menu {
@@ -18,7 +18,7 @@ struct LanguagePickerView: View {
                     .font(.quickSand(size: 12, name: .regular))
                 ForEach(CountryData.countries, id: \.self) { item in
                     Button {
-                        UserDefaultsManager.shared.speechCountry = item
+                        picked = item
                     } label: {
                         Text("\(item.flag) \(item.name)")
                     }
@@ -64,5 +64,5 @@ private struct LanguagePickerBackground: ViewModifier {
 
 
 #Preview {
-    LanguagePickerView()
+    LanguagePickerView(picked: .constant(Country(name: "", flag: "", code: "")))
 }

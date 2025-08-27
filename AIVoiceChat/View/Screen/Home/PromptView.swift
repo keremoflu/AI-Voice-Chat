@@ -22,6 +22,7 @@ struct PromptView: View {
             }
         }
     }
+
 }
 
 #Preview {

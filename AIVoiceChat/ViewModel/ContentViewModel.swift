@@ -7,19 +7,20 @@
 
 import Foundation
 import SwiftUI
-import Combine
+
 
 class ContentViewModel: ObservableObject {
     @Published var pickedLanguage = UserDefaultsManager.shared.speechCountry
-    @Published var audioPermissionManager: AudioPermissionManager
-    @Published var speechRecognitionManager: SpeechRecognitionManager
     @Published var contentState: ContentViewState = .readyToRecord
+    
+    private var audioPermissionManager: AudioPermissionManager
+    private var speechRecognitionManager: SpeechRecognitionManager
     
     let messageCoordinator: MessageCoordinator
     private let networkManager: NetworkManager
     private let context = PersistanceController.shared.container.viewContext
     private let speechPermissionmanager: SpeechPermissionManager
-    let alertManager: AlertManager
+    private let alertManager: AlertManager
     
     init(
         networkManager: NetworkManager,
@@ -35,7 +36,6 @@ class ContentViewModel: ObservableObject {
         self.speechPermissionmanager = speechPermissionManager ?? SpeechPermissionManager(alertManager: alertManager)
         self.speechRecognitionManager = speechRecognitionManager
         self.messageCoordinator = messageCoordinator
-        
     }
     
     func sendChatGPTRequest(prompt: String) async throws {

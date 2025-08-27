@@ -10,10 +10,11 @@ import SwiftUI
 struct ToolbarView: View {
     
     var onSettingsSelected: (SettingsMenuData) -> Void
+    @State var country: Country = UserDefaultsManager.shared.speechCountry
     
     var body: some View {
         HStack {
-            LanguagePickerView()
+            LanguagePickerView(picked: $country)
                 .accessibilityLabel("Language Button")
                 
             Spacer()

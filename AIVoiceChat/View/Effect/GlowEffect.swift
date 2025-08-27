@@ -9,9 +9,7 @@ import SwiftUI
 
 struct GlowEffect: View {
     
-    private var isAnimating: Bool = true
-    @State private var isGrowing = false
-    
+    @State private var isAnimating: Bool = true
     @State private var lineWidth: CGFloat = 16.0
     
     var body: some View {
@@ -27,7 +25,7 @@ struct GlowEffect: View {
                         ]),
                         center: .center
                     ),
-                    lineWidth: isGrowing ? 16 : 8
+                    lineWidth: isAnimating ? 16 : 8
                 )
                 .blur(radius: 10)
                 .opacity(0.8)
@@ -37,13 +35,13 @@ struct GlowEffect: View {
         .animation(
             Animation.easeInOut(duration: 0.5)
                    .repeatForever(autoreverses: true),
-                   value: isGrowing
+                   value: isAnimating
         )
         .onChange(of: isAnimating) { newValue in
-            isGrowing = isAnimating
+             
         }
         .onAppear {
-            isGrowing = true
+            isAnimating.toggle()
         }
     }
 }
